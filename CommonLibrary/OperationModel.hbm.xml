@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+                   assembly="CommonLibrary" 
+                   namespace="CommonLibrary.Models"
+                   auto-import="true">
+  <class name="OperationModel" table="operations">
+    <id name="Id" column="id">
+      <generator class="identity" />
+    </id>
+    <property name="DateOperation" column="date_operation"/>
+    <property name="DateValidation" column="date_validation" />
+    <property name="Ordre" column="ordre" />
+    <property name="CompteId" column="compte_id"/>
+    <property name="TypePaiement" column="type_paiement" />
+    <property name="DateValidationPartielle" column="date_validation_partielle" />
+    <property name="NumeroCheque" column="numero_cheque"/>
+    <property name="Report" column="report"/>
+    <property name="IsVirementAuto" column="virement_auto"/>
+    <!--<bag name="Details" table="details" lazy="false" cascade="none" fetch="select" inverse="true" >
+      <key column="operation_id"/>
+      <one-to-many class="DetailModel"/>
+    </bag>-->
+    <property name="CreatedAt" column="created_at"/>
+    <property name="UpdatedAt" column="updated_at"/>
+    <property name="MontantBudget" column="montant_budget"/>
+  <property name="LienOperationId" column="lien_operation_id"/>
+  </class>
+</hibernate-mapping>

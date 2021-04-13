@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+                   assembly="CommonLibrary" 
+                   namespace="CommonLibrary.Models"
+                   auto-import="true">
+  <class name="VirementModel" table="virements">
+    <id name="Id" column="id">
+      <generator class="identity" />
+    </id>
+    <property name="Description" column="description"/>
+    <property name="CompteSrcId" column="compte_src_id"/>
+    <property name="CompteDstId" column="compte_dst_id"/>
+    
+    <property name="Jour" column="jour" />
+    <property name="Duree" column="duree"/>
+
+    <property name="Ordre" column="ordre"/>
+    <property name="DateDernierVirement" column="date_dernier"/>
+
+    <property name="Frequence" column="frequence"/>
+    <property name="Montant" column="montant"/>
+
+    <property name="CreatedAt" column="created_at"/>
+    <property name="UpdatedAt" column="updated_at"/>
+    
+    <property name="TypePaiement" column="type_paiement"/>
+  </class>
+</hibernate-mapping>

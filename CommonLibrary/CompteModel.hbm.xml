@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+                   assembly="CommonLibrary" 
+                   namespace="CommonLibrary.Models"
+                   auto-import="true">
+  <class name="CompteModel" table="comptes">
+    <id name="Id" column="id">
+      <generator class="identity" />
+    </id>
+    <property name="Numero" column="numero" />
+    <property name="Designation" column="designation" />
+    <property name="ComptaId" column="compta_id" />
+    <property name="BanqueId" column="banque_id" />
+    <property name="CarteBancaire" column="carte_bancaire" />
+    <property name="IsActif" column="actif"/>
+    <!--<bag name="Operations" cascade="all" table="operations">
+      <key column="compte_id"/>
+      <one-to-many class="OperationModel"/>
+      </bag>-->
+
+    <property name="CreatedAt" column="created_at"/>
+    <property name="UpdatedAt" column="updated_at"/>
+  </class>
+</hibernate-mapping>

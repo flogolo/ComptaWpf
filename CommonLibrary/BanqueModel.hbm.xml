@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+                   assembly="CommonLibrary" 
+                   namespace="CommonLibrary.Models"
+                   auto-import="true">
+  <class name="BanqueModel" table="banques">
+    <id name="Id" column="id">
+      <generator class="identity" />
+    </id>
+    <property name="Description" column="designation"/>
+    <property name="Adresse" column="adresse"/>
+    <property name="CodePostal" column="code_postal" />
+    <property name="Ville" column="ville" />
+    <property name="Notes" column="notes"  />
+    
+    <property name="CreatedAt" column="created_at"/>
+    <property name="UpdatedAt" column="updated_at"/>
+  </class>
+</hibernate-mapping>

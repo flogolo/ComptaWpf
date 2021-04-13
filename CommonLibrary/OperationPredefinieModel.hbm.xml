@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+                   assembly="CommonLibrary" 
+                   namespace="CommonLibrary.Models"
+                   auto-import="true">
+  <class name="OperationPredefinieModel" table="predefinis">
+    <id name="Id" column="id">
+      <generator class="identity" />
+    </id>
+    <property name="Ordre" column="ordre" />
+    <property name="TypePaiement" column="type_paiement" />
+    <property name="RubriqueId" column="rubrique_id" />
+    <property name="SousRubriqueId" column="sousrubrique_id"/>
+    <property name="Commentaire" column="commentaire"/>
+
+    <property name="CreatedAt" column="created_at"/>
+    <property name="UpdatedAt" column="updated_at"/>
+  </class>
+</hibernate-mapping>
