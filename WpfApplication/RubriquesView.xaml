@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="MaCompta.RubriquesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:MaCompta.Controls"
+             mc:Ignorable="d"
+             >
+    <UserControl.Resources>
+        <!-- template actions sur rubrique -->
+        <DataTemplate x:Key="ActionsRubriqueTemplate">
+            <StackPanel Orientation="Horizontal">
+                <controls:ImageButton BoutonType="Annuler"
+                                                  Command="{Binding AnnulerCommand}"
+                                      TooltipText="Annuler les modifications"/>
+                <controls:ImageButton BoutonType="Sauvegarder" TooltipText="Enregistrer la rubrique" Command="{Binding ActionSauvegarderCommand}"/>
+                <controls:ImageButton BoutonType="Supprimer"
+                                                Command="{Binding ActionSupprimerCommand}"
+                                                TooltipText="Supprimer la rubrique"/>
+                <controls:ImageButton BoutonType="Ajouter"
+                                                Command="{Binding ActionAjouterCommand}"
+                                                IsEnabled="{Binding IsSaved}"
+                                                TooltipText="Ajouter une sous-rubrique"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+            <!-- saisie rubrique -->
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,10,0,0" 
+                        Grid.Row="0">
+                <Button Content="Ajouter une rubrique" Command="{Binding ActionAjouterCommand}"/>
+            </StackPanel>
+        <!-- Liste des rubriques -->
+        <controls:MyDataGrid x:Name="DgRubriques"
+                             Grid.Row="1"
+            ItemsSource="{Binding Rubriques}"
+                  AutoGenerateColumns="False"
+                           Margin="0,10"
+                  CellEditEnding="DataGridCellEditEnding"
+                             ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                           HorizontalAlignment="Left"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  IsSynchronizedWithCurrentItem ="True"
+                           HeadersVisibility="None">
+
+                <controls:MyDataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id, Mode=TwoWay}" IsReadOnly="True" FontSize="8"/>
+                    <DataGridTextColumn Binding="{Binding Libelle, Mode=TwoWay}" Width="200" />
+                    <DataGridTemplateColumn CellTemplate="{StaticResource ActionsRubriqueTemplate}" Width="Auto"/>
+                </controls:MyDataGrid.Columns>
+
+                <controls:MyDataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <!-- Liste des sous-rubriques -->
+                    <ListBox ItemsSource="{Binding SousRubriques}" Margin="0" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <!--<Border  Background="{Binding IsModified, Converter={StaticResource BoolToColorConverter}}">-->
+                                    <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Id}" MinWidth="20"  FontSize="8"/>
+                                    <TextBox Text="{Binding Libelle, Mode=TwoWay}" Width="200"/>
+                                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                            <controls:ImageButton BoutonType="Annuler"
+                                                  Command="{Binding AnnulerCommand}"
+                                                TooltipText="Annuler les modifications"/>
+                                            <controls:ImageButton BoutonType="Sauvegarder"
+                                                Command="{Binding ActionSauvegarderCommand}"
+                                                TooltipText="Enregistrer la sous-rubrique"/>
+                                            <controls:ImageButton BoutonType="Supprimer"
+                                                Command="{Binding ActionSupprimerCommand}"
+                                                TooltipText="Supprimer la sous-rubrique"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                <!--</Border>-->
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DataTemplate>
+                </controls:MyDataGrid.RowDetailsTemplate>
+            </controls:MyDataGrid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,24 @@
+﻿<Window x:Class="MaCompta.Dialogs.DialogOperationsFiltrees"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        BorderThickness="2"
+        Title="Operations Filtrées">
+    <Grid>
+        <StackPanel>
+        <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Operations}"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Date opération" CellTemplate="{StaticResource DateOperationTemplate}"/>
+                <DataGridTemplateColumn Header="Date validation partielle" CellTemplate="{StaticResource DateValidationPartielleTemplate}"/>
+                <DataGridTemplateColumn Header="Date validation" CellTemplate="{StaticResource DateValidationTemplate}"/>
+                <DataGridTextColumn Header="Ordre" Binding="{Binding Ordre}"/>
+                <DataGridTemplateColumn Header="Montant" CellTemplate="{StaticResource MontantTemplate}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+            <StackPanel Orientation="Horizontal" Margin="20">
+            <Label Content="Total : "/>
+                <Label Content="{Binding MontantTotal,Converter={StaticResource MyCurrencyConverter}}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

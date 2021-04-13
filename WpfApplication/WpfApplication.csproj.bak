@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8B2D6C4F-314F-49B3-9D78-FE4D0EBBF284}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WpfApplication</RootNamespace>
+    <AssemblyName>MaCompta</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\cashbox.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Input.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\CommandMap.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Common\BooleanToColorConverter.cs" />
+    <Compile Include="Common\ComboBoxItem.cs" />
+    <Compile Include="Common\ComboBoxItemCollection.cs" />
+    <Compile Include="Common\BoolToVisibilityConverter.cs" />
+    <Compile Include="Common\EventArgsGeneric.cs" />
+    <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Common\FrequenceConverter.cs" />
+    <Compile Include="Common\FrequenceEnum.cs" />
+    <Compile Include="Common\DataGridExtensions.cs" />
+    <Compile Include="Common\DecimalConverters.cs" />
+    <Compile Include="Common\DateTimeConverters.cs" />
+    <Compile Include="Common\EnumToBooleanConverter.cs" />
+    <Compile Include="Common\ExpressionTreesHelper.cs" />
+    <Compile Include="Common\Finder.cs" />
+    <Compile Include="ComptasView.xaml.cs">
+      <DependentUpon>ComptasView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ComptesView.xaml.cs">
+      <DependentUpon>ComptesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImageButton.cs" />
+    <Compile Include="Controls\IViewModel.cs" />
+    <Compile Include="Controls\MultiSelectComboBox.xaml.cs">
+      <DependentUpon>MultiSelectComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MyDataGrid.cs" />
+    <Compile Include="Controls\MyTreeView.cs" />
+    <Compile Include="OperationPredefinieView.xaml.cs">
+      <DependentUpon>OperationPredefinieView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RubriquesView.xaml.cs">
+      <DependentUpon>RubriquesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\PaginatedObservableCollection.cs" />
+    <Compile Include="StatsView.xaml.cs">
+      <DependentUpon>StatsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl1.xaml.cs">
+      <DependentUpon>UserControl1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ComptesViewModel.cs" />
+    <Compile Include="ViewModels\CompteViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ComptaViewModel.cs" />
+    <Compile Include="ViewModels\BanqueViewModel.cs" />
+    <Compile Include="ViewModels\DetailViewModel.cs" />
+    <Compile Include="ViewModels\ModelViewModelBase.cs" />
+    <Compile Include="ViewModels\OperationPredefinieViewModel.cs" />
+    <Compile Include="ViewModels\OperationViewModel.cs" />
+    <Compile Include="ViewModels\StatistiquesViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\SousRubriqueViewModel.cs" />
+    <Compile Include="ViewModels\RubriqueViewModel.cs" />
+    <Compile Include="ViewModels\RubriquesViewModel.cs" />
+    <Compile Include="ViewModels\VirementDetailViewModel.cs" />
+    <Compile Include="ViewModels\VirementMoisViewModel.cs" />
+    <Compile Include="ViewModels\VirementMontantViewModel.cs" />
+    <Compile Include="ViewModels\VirementsViewModel.cs" />
+    <Compile Include="ViewModels\VirementViewModel.cs" />
+    <Compile Include="VirementsView.xaml.cs">
+      <DependentUpon>VirementsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WpfIocFactory.cs" />
+    <Page Include="ComptasView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ComptesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MultiSelectComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="OperationPredefinieView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RubriquesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VirementsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WhistlerBlue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj">
+      <Project>{08AED448-599D-49D7-849E-E3E14C74845C}</Project>
+      <Name>CommonLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{BAE07597-531D-480B-9AE4-7227E0B8C401}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\accept.png" />
+    <Resource Include="Images\add.png" />
+    <Resource Include="Images\Ajout.png" />
+    <Resource Include="Images\arrow_right.png" />
+    <Resource Include="Images\cancel.png" />
+    <Resource Include="Images\copy.png" />
+    <Resource Include="Images\delete.png" />
+    <Resource Include="Images\Duplication.png" />
+    <Resource Include="Images\paste.png" />
+    <Resource Include="Images\Sauvegarde.png" />
+    <Resource Include="Images\save.png" />
+    <Resource Include="Images\Suppression.png" />
+    <Resource Include="Images\Validation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\Income.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\cashbox.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\minusBtn.png" />
+    <Resource Include="Images\plusBtn.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\plusBtn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\acceptPartiel.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

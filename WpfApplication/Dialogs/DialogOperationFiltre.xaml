@@ -1,0 +1,38 @@
+﻿<Window x:Class="MaCompta.Dialogs.DialogOperationFiltre"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MaCompta.Dialogs"
+        mc:Ignorable="d"
+        Title="DialogOperationFiltre" Height="200" Width="600">
+  <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
+  <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+      <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Center">
+      <Label Content=" Etat : " MinWidth="100"/>
+      <ComboBox Width="120"
+                x:Name="CbEtatFiltre"
+        ItemsSource="{Binding EtatFiltres}"
+        SelectedIndex="{Binding FiltreTypeIndex}" >
+      </ComboBox>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center">
+        <Label Content="Opérations comprises entre le " MinWidth="50"/>
+        <DatePicker Width="100" Height="27"
+                    VerticalContentAlignment="Center"
+                    SelectedDate="{Binding FiltreDate1, Mode=TwoWay}" />
+        <Label Content=" et le " MinWidth="50" HorizontalContentAlignment="Center"/>
+        <DatePicker Width="100"
+                    SelectedDate="{Binding FiltreDate2, Mode=TwoWay}"
+                    VerticalContentAlignment="Center" />
+      </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+          <Button Click="CloseButtonClick" VerticalAlignment="Center" Width="150">Appliquer le filtre</Button>
+            <Button Click="CancelButtonClick" VerticalAlignment="Center" Width="150">Annuler</Button>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="MaCompta.TestControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:common="clr-namespace:MaCompta.Common"
+             xmlns:local="clr-namespace:MaCompta"
+             xmlns:controls="clr-namespace:MaCompta.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <common:DecimalToColorConverter x:Key="CurrencyToColor"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel>
+        <Button Width="150" Margin="2" Content="bouton"></Button>
+        <Calendar DisplayMode="Year"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                          SelectionMode="SingleDate" SelectedDate="{Binding SelectedMonth, Mode=TwoWay}"/>
+
+        <!--<Expander Header="Expander collapsed" IsExpanded="false" Margin="5" FontFamily="Segoe UI Bold">
+            <Label Content="test expander"/>
+        </Expander>
+        <Expander Header="Expander expanded" IsExpanded="true" Margin="5">
+            <Label Content="test expander extended"/>
+        </Expander>-->
+        <!--<TabControl>
+            <TabItem Header="onglet 1">
+                <TextBlock>contenu onglet 1</TextBlock>
+            </TabItem>
+            <TabItem Header="onglet 2" IsEnabled="False"></TabItem>
+            <TabItem Header="onglet 3"></TabItem>
+            <controls:CloseableTabItem Header="Close"/>
+        </TabControl>-->
+        <Menu>
+            <MenuItem Header="menu1"></MenuItem>
+            <MenuItem Header="menu2">
+                <MenuItem Header="submenu1"></MenuItem>
+                <MenuItem Header="submenu2"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="menu3">
+                <MenuItem Header="submenu3"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <!--<Border Background="MediumSeaGreen" Height="50">
+        <TextBlock  Height="25"
+                         VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="100,00 €"
+                    
+                    FontSize="16"
+                    FontStyle="Italic"
+                        FontWeight="Bold"
+                       Foreground="White"/>
+    </Border>
+        <Border Background="Tomato" Height="50">
+            <TextBlock  Height="25"
+                               VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Text="-100,00 €"
+                        FontWeight="Bold"
+                       Foreground="White"/>
+        </Border>
+        <StackPanel Orientation="Horizontal" Width="300" Background="CadetBlue">
+            <Button Content="test1" Width="50"/>
+            <Button Content="test2" Width="50"/>
+        </StackPanel>-->
+        <!--<controls:StackPanelWithCenteredContent Height="46" Orientation="Horizontal" Width="300" Background="Aquamarine">
+            <Button Content="test1" Width="50"/>
+            <Button Content="test2" Width="50"/>
+        </controls:StackPanelWithCenteredContent>-->
+    </StackPanel>
+</UserControl>

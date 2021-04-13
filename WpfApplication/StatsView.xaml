@@ -1,0 +1,311 @@
+﻿<UserControl x:Class="MaCompta.StatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:common="clr-namespace:MaCompta.Common"
+             xmlns:controls="clr-namespace:MaCompta.Controls"
+             xmlns:viewModels="clr-namespace:MaCompta.ViewModels"
+             mc:Ignorable="d" 
+             SizeChanged="UserControlSizeChanged"
+             >
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <common:CurrencyConverter x:Key="MyCurrencyConverter"/>
+        <visualizationToolkit:ResourceDictionaryCollection x:Key="MyPalette">
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Brown"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Purple"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="LightBlue"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Orange"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Red"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Cyan"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Green"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Yellow"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Pink"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Blue"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Lavender"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="PaleGreen"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="MediumTurquoise"/>
+                </Style>
+            </ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="DataPointStyle" TargetType="Control">
+                    <Setter Property="Background" Value="Black"/>
+                </Style>
+            </ResourceDictionary>
+        </visualizationToolkit:ResourceDictionaryCollection>
+    </UserControl.Resources>
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="DgRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Paramètres -->
+            <StackPanel Grid.Row="0" x:Name="StkParams">
+                <!-- Choix du compte-->
+                <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
+                <Label Content="Choix Compte :" Width="200"/>
+                <controls:MultiSelectComboBox Width="300"
+                                              Height="25"
+                                              ItemsSource="{Binding Comptes}"
+                                              SelectedItems="{Binding SelectedComptes}"
+                                              DefaultText="Aucun"
+                                              >
+                    
+                </controls:MultiSelectComboBox>
+                <!--<ComboBox Width="200" ItemsSource="{Binding Comptes}"
+                           SelectedItem="{Binding SelectedCompte, Mode=TwoWay}"/>-->
+                <!--<Label Content="Aucune donnée disponible. Chargez un compte et sélectionnez les valeurs"
+                       Visibility="{Binding IsNotAvailable, Converter={StaticResource BoolToVis}}"
+                       Margin="5" Style="{StaticResource TextBlockStyle}"/>-->
+            </StackPanel>
+                <!-- Choix rubrique -->
+                <StackPanel Orientation="Horizontal" Margin="5,5,5,0" >
+                <Label Content="Choix Rubrique :" Width="200"/>
+                <ComboBox Width="200" ItemsSource="{Binding Rubriques}"
+                           SelectedItem="{Binding SelectedRubrique, Mode=TwoWay}"/>
+            </StackPanel>
+                <!-- Choix sous-rubrique-->
+                <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
+                <Label Content="Choix Sous-Rubrique :" Width="200"/>
+                <ComboBox Width="200" ItemsSource="{Binding SousRubriques}"
+                        SelectedItem="{Binding SelectedSousRubrique, Mode=TwoWay}"/>
+            </StackPanel>
+                <!-- Actions -->
+            <StackPanel Orientation="Horizontal" Margin="0,5">
+                <Button Content="Mois en cours" Click="CurrentMois"/>
+                <Button Content="Mois précédent" Click="MoisPrecedentClick" />
+                <Button Content="Mois suivant" Click="MoisSuivantClick"/>
+                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="0,2,7,2" Stroke="Black" />
+                <Button Content="Année en cours" Click="CurrentAnnee" />
+                <Button Content="Année précédente" Click="AnneePrecedenteClick"/>
+                <Button Content="Année suivante" Click="AnneeSuivanteClick" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Année Scolaire en cours" Click="AnneeScolaireCouranteClick"/>
+                <Button Content="Année Scolaire précédente" Click="AnneeScolairePrecedenteClick"/>
+                <Button Content="Année Scolaire suivante" Click="AnneeScolaireSuivanteClick"/>
+            </StackPanel>
+                <!-- Date de début-->
+                <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
+                <Label Content="Date de début :" Width="200"/>
+                <DatePicker SelectedDate="{Binding DateDebut, Mode=TwoWay}"  
+                                      Width="100"/>
+            </StackPanel>
+                <!-- Date de fin -->
+                <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
+                <Label Content="Date de fin :" Width="200"/>
+                <DatePicker SelectedDate="{Binding DateFin, Mode=TwoWay}" 
+                                      Width="100"/>
+               </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5,5,0">
+                  <Button Content="Calculer" Width="100" Command="{Binding CalculCommand}" 
+                          ToolTip="Lancer le calcul des statistiques"/>
+                </StackPanel>
+        </StackPanel>
+        <!-- résultats-->
+            <Grid Grid.Row="1" x:Name="DgGraph">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*"/>
+                        <ColumnDefinition Width=".5*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                <!-- Graphique camembert -->
+            <chartingToolkit:Chart Background="#FF406796"
+                                       Grid.Column="0"
+                                   Foreground="Black"
+                           Title="{Binding StatTitle}" LegendTitle="{Binding LegendTitle}"
+                           Palette="{StaticResource MyPalette}">
+                <chartingToolkit:Chart.PlotAreaStyle>
+                    <Style TargetType="Grid">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </chartingToolkit:Chart.PlotAreaStyle>
+                <chartingToolkit:PieSeries ItemsSource="{Binding Stats}" 
+                               IndependentValueBinding="{Binding Libelle}"  
+                               DependentValueBinding="{Binding Montant}"
+                               >
+                        
+                    </chartingToolkit:PieSeries>
+                </chartingToolkit:Chart>
+                <!-- Graphique par mois -->
+            <chartingToolkit:Chart Background="#FF406796"
+                                   Foreground="Black"
+                                       Grid.Column="1"
+                        Visibility="{Binding Path=IsSousRubrique, Converter={StaticResource BoolToVis}}"
+                           LegendTitle="{Binding LegendTitle}" x:Name="ChartColumn"
+                           Palette="{StaticResource MyPalette}">
+                <chartingToolkit:Chart.PlotAreaStyle>
+                    <Style TargetType="Grid">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Style>
+                </chartingToolkit:Chart.PlotAreaStyle>
+            </chartingToolkit:Chart>
+                <!-- par rubrique/mois -->
+                <StackPanel Grid.Column="2"
+                            Visibility="{Binding Path=IsSousRubrique, Converter={StaticResource BoolToVis}}">
+                    <!-- Choix Sous-rubrique -->
+                    <TreeView ItemsSource="{Binding StatsMulti}" ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="TvStats">
+                    <TreeView.ItemContainerStyle>
+
+                        <Style TargetType="TreeViewItem">
+
+                            <Setter Property="IsExpanded" Value="False"/>
+
+                        </Style>
+
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate  DataType="{x:Type viewModels:DetailStatMulti}" ItemsSource="{Binding Path=Stats}">
+                                <StackPanel Orientation="Horizontal" >
+                                <TextBlock  Text="{Binding Path=Libelle}" FontWeight="Bold" ></TextBlock>
+                                </StackPanel>
+                        </HierarchicalDataTemplate >
+
+                        <HierarchicalDataTemplate  DataType="{x:Type viewModels:DetailStatSerie}" ItemsSource="{Binding Details}">
+                            <StackPanel Orientation="Horizontal" >
+                                <Label Content="{Binding MoisStr}" />
+                                <Label Content="{Binding Montant, Converter={StaticResource MyCurrencyConverter}}" HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+
+                        <HierarchicalDataTemplate  DataType="{x:Type viewModels:DetailDate}">
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  Width="75"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="75"/>
+                                    <ColumnDefinition Width="150"/>
+                                        </Grid.ColumnDefinitions>
+                                <Border BorderBrush="Blue" BorderThickness="1"  Grid.Column="0">
+                                        <Label Content="{Binding DateDetail}"/>
+                                    </Border>
+                                <Border BorderBrush="Blue" BorderThickness="0,1,1,1" Grid.Column="1">
+                                        <Label Content="{Binding Ordre}" Margin="2,0,0,0"/>
+                                    </Border>
+                                <Border BorderBrush="Blue" BorderThickness="0,1,1,1" Grid.Column="2">
+                                        <Label Content="{Binding Montant, Converter={StaticResource MyCurrencyConverter}}" Margin="2,0,0,0"/>
+                                    </Border>
+                                <Border BorderBrush="Blue" BorderThickness="0,1,1,1" Grid.Column="3" >
+                                        <Label Content="{Binding Commentaire}" Margin="2,0,0,0"/>
+                                    </Border>
+                                </Grid>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                    </TreeView>
+
+                <StackPanel Orientation="Horizontal" Margin="5,0">
+                    <Label Content="Total : "/>
+                    <Label Content="{Binding TotalDetailSousRubrique, Converter={StaticResource MyCurrencyConverter}}"/>
+                </StackPanel>
+            </StackPanel>
+              
+              <!-- par rubrique/sous-rubrique -->
+              <StackPanel Grid.Column="1" Grid.ColumnSpan="2"
+                            Visibility="{Binding Path=IsAllRubriques, Converter={StaticResource BoolToVis}}">
+
+                <TreeView ItemsSource="{Binding StatsRubrique}" 
+                          ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="TvStatsRubrique">
+                  <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                      <Setter Property="IsExpanded" Value="False"/>
+                    </Style>
+                  </TreeView.ItemContainerStyle>
+                  <TreeView.Resources>
+                    <HierarchicalDataTemplate  DataType="{x:Type viewModels:StatRubriqueModel}" 
+                                               ItemsSource="{Binding Path=SousRubriqueStats}">
+                      <StackPanel Orientation="Horizontal" >
+                        <TextBlock  Text="{Binding Path=Libelle}" FontWeight="Bold" ></TextBlock>
+                        <Label Margin="5,0,0,0" 
+                               Content="{Binding Montant, Converter={StaticResource MyCurrencyConverter}}" />
+                      </StackPanel>
+                    </HierarchicalDataTemplate >
+
+                    <HierarchicalDataTemplate  DataType="{x:Type viewModels:StatSousRubriqueModel}" 
+                                               ItemsSource="{Binding Details}">
+                      <StackPanel Orientation="Horizontal" >
+                        <Label Content="{Binding Libelle}" />
+                        <Label Margin="5,0,0,0" Content="{Binding Montant, Converter={StaticResource MyCurrencyConverter}}"/>
+                      </StackPanel>
+                    </HierarchicalDataTemplate>
+
+                    <HierarchicalDataTemplate  DataType="{x:Type viewModels:DetailDate}">
+                      <Grid >
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition  Width="75"/>
+                          <ColumnDefinition Width="150"/>
+                          <ColumnDefinition Width="75"/>
+                          <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <Border BorderBrush="Blue" BorderThickness="1"  Grid.Column="0">
+                          <Label Content="{Binding DateDetail}"/>
+                        </Border>
+                        <Border BorderBrush="Blue" BorderThickness="0,1,1,1" Grid.Column="1">
+                          <Label Content="{Binding Ordre}" Margin="2,0,0,0"/>
+                        </Border>
+                        <Border BorderBrush="Blue" BorderThickness="0,1,1,1" Grid.Column="2">
+                          <Label Content="{Binding Montant, Converter={StaticResource MyCurrencyConverter}}" Margin="2,0,0,0"/>
+                        </Border>
+                        <Border BorderBrush="Blue" BorderThickness="0,1,1,1" Grid.Column="3" >
+                          <Label Content="{Binding Commentaire}" Margin="2,0,0,0"/>
+                        </Border>
+                      </Grid>
+                    </HierarchicalDataTemplate>
+                  </TreeView.Resources>
+                </TreeView>
+              </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

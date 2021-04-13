@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
+  <session-factory>
+    <property name="connection.provider">DataAccess.MaComptaConnectionProvider, DataAccess</property>
+    <!--<property name="connection.provider">NHibernate.Connection.DriverConnectionProvider</property>-->
+    <property name="dialect">NHibernate.Dialect.MySQLDialect</property>
+    <property name="connection.driver_class">NHibernate.Driver.MySqlDataDriver</property>
+    <!--<property name="connection.connection_string">Data Source=MaCompta.sdf</property>-->
+    <!--<property name="connection.connection_string">Server=localhost;Database=macompta_development;User ID=root</property>-->
+    <!--<property name="connection.connection_string">Server=localhost;Port=3309;Database=macompta_test;User ID=root</property>-->
+    <property name="connection.connection_string">Server=localhost;Port=3309;Database=macompta;User ID=root</property>
+    <property name="show_sql">false</property>
+    <mapping assembly="CommonLibrary"/>
+  </session-factory>
+</hibernate-configuration>

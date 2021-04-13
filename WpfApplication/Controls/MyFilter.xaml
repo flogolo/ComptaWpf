@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="MaCompta.Controls.MyFilter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:popups="clr-namespace:MaCompta.Dialogs"
+             xmlns:local="clr-namespace:MaCompta.Controls">
+    <UserControl.Resources>
+        <!-- Bouton de filtre -->
+        <ControlTemplate x:Key="ButtonFilterTemplate">
+            <Image Source="/Images/filter.png" Width="16" Height="16" />
+        </ControlTemplate>
+        <!-- Bouton de filtre -->
+        <ControlTemplate x:Key="ButtonCancelFilterTemplate">
+            <Image Source="/Images/Suppression.png" Width="16" Height="16" />
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid>
+    <StackPanel Orientation="Horizontal">
+        <Button Name="btnOrdreFilter" Click="btnOrdreFilter_Click" Margin="0"
+                Template="{StaticResource ButtonFilterTemplate}"/>
+            <Button Template="{StaticResource ButtonCancelFilterTemplate}" Margin="0"
+                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                Command="{Binding FilterAllCommand}"
+                Visibility="{Binding IsNotAllSelected, Converter={StaticResource BoolToVis}}"/>
+    </StackPanel>
+    <popups:PopupFilter x:Name="popOrdre" PlacementTarget="{Binding ElementName=btnOrdreFilter}"/>
+    </Grid>
+</UserControl>

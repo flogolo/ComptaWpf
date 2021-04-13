@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="MaCompta.ComparatifView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:common="clr-namespace:MaCompta.Common"
+             xmlns:controls="clr-namespace:MaCompta.Controls"
+             xmlns:viewModels="clr-namespace:MaCompta.ViewModels"
+             mc:Ignorable="d" 
+             SizeChanged="UserControlSizeChanged">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <common:CurrencyConverter x:Key="MyCurrencyConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+        <ScrollViewer>
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="DgRoot" Margin="10" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Paramètres -->
+                <!-- Choix du compte-->
+            <BulletDecorator Grid.Row="0"  >
+                <BulletDecorator.Bullet>
+                    <Label Content="Choix Compte :" Width="150"/>
+                </BulletDecorator.Bullet>
+                <ComboBox ItemsSource="{Binding Comptes}" Width="150"
+                              HorizontalAlignment="Left"
+                           SelectedItem="{Binding SelectedCompte, Mode=TwoWay}"/>
+            </BulletDecorator>
+                <!-- Mois-->
+            <BulletDecorator Grid.Row="1">
+                <BulletDecorator.Bullet>
+                    <Label Content="Mois :" Width="150"/>
+                </BulletDecorator.Bullet>
+                <DatePicker SelectedDate="{Binding SelectedMonth, Mode=TwoWay}" 
+                            HorizontalAlignment="Left"
+                                      Width="100"/>
+            </BulletDecorator>
+                
+            <!--<Calendar DisplayMode="Year" 
+                      Grid.Row="1" Grid.Column="1" 
+                          SelectionMode="SingleDate" SelectedDate="{Binding SelectedMonth, Mode=TwoWay}"/>-->
+                <!-- Année -->
+                <!--<Label Grid.Row="2" Grid.Column="0" Content="Année :" Width="200"/>-->
+                <!--<Calendar DisplayMode="Decade" HorizontalAlignment="Left"
+                          Grid.Row="2" Grid.Column="1"
+                          SelectionMode="SingleDate" SelectedDate="{Binding SelectedYear, Mode=TwoWay}" />-->
+            <!--<DatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding SelectedYear, Mode=TwoWay}" 
+                                      Width="100"/>-->
+                <!--Bouton de calcul-->
+            <Button Grid.Row="3" Content="Calculer" 
+                    Width="100" Command="{Binding CalculCommand}" 
+                          ToolTip="Lancer le calcul"/>
+        
+        <!-- résultats-->
+                <ListView Grid.Row="4" ItemsSource="{Binding Results}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Rubrique" Width="150" DisplayMemberBinding="{Binding Rubrique}" />
+                            <GridViewColumn Header="Sous-Rubrique" Width="150" DisplayMemberBinding="{Binding SousRubrique}" />
+                            <GridViewColumn Header="Débit Budget" Width="100" DisplayMemberBinding="{Binding DebitBudget}" />
+                            <GridViewColumn Header="Débit Réel" Width="100" DisplayMemberBinding="{Binding DebitReel}" />
+                        <GridViewColumn Header="Crédit Budget" Width="100" DisplayMemberBinding="{Binding CreditBudget}" />
+                        <GridViewColumn Header="Crédit Réel" Width="100" DisplayMemberBinding="{Binding CreditReel}" />
+                        <GridViewColumn Header="Solde Réel" Width="100" DisplayMemberBinding="{Binding SoldeReel}" />
+                    </GridView>
+                    </ListView.View>
+                </ListView>
+      </Grid>
+        </ScrollViewer>
+</UserControl>

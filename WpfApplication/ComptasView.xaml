@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="MaCompta.ComptasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:common="clr-namespace:MaCompta.Common"
+             xmlns:controls="clr-namespace:MaCompta.Controls"
+             xmlns:viewModels="clr-namespace:MaCompta.ViewModels"
+             mc:Ignorable="d" SizeChanged="UserControlSizeChanged">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <common:BoolToVisibilityConverter x:Key="BoolToVisInverse" FalseToVisibility="Visible"/>
+        <common:BooleanToColorConverter x:Key="BoolToColor"/>
+  </UserControl.Resources>
+  
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <controls:MyTreeView  HorizontalAlignment="Left" 
+                              Grid.Column="0"
+                           Margin="0,0" 
+                           VerticalAlignment="Top" 
+                   SelectedModel="{Binding Item, Mode=TwoWay}"
+                           ItemsSource="{Binding Comptas}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="OnItemMouseDoubleClick"  />
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <!--<TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                  <Setter Property="IsExpanded" Value="True"/>
+                  <Setter Property="Foreground" Value="Red" />
+                </Style>
+            </TreeView.ItemContainerStyle>-->
+
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Comptes}" DataType="{x:Type viewModels:CompteViewModel}" >
+                  <Label Content="{Binding Libelle}" Width="200" Foreground="{Binding IsCompta, Converter={StaticResource BoolToColor},ConverterParameter=Navy}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </controls:MyTreeView>
+        <Border BorderBrush="DarkGray"
+                Visibility="{Binding IsComptaSelected, Converter={StaticResource BoolToVisInverse}}"
+                BorderThickness="1"
+                 Grid.Column="1">
+            <StackPanel Background="{Binding IsModified, Converter={StaticResource BoolToColorConverter}}"
+                    DataContext="{Binding SelectedCompte}">
+            <!--compta associée-->
+            <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label Content="Compta : " Width="100"/>
+                <ComboBox Width="200" 
+                                          DisplayMemberPath="Libelle"
+                                          ItemsSource="{Binding Comptas}"
+                                          SelectedItem="{Binding SelectedCompta,Mode= TwoWay}"/>
+            </StackPanel>
+            <!--banque associée-->
+            <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label Content="Banque : " Width="100"/>
+                <ComboBox Width="200" 
+                          ItemsSource="{Binding Banques}"
+                          SelectedItem="{Binding SelectedBanque,Mode= TwoWay}"
+                          DisplayMemberPath="Libelle"
+                />
+            </StackPanel>
+            <!--numéro de compte-->
+            <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label Content="Numéro : " Width="100"/>
+                <TextBox MaxLength="20"
+                         Text="{Binding Numero, Mode=TwoWay}" 
+                         Width="150" />
+            </StackPanel>
+            <!--désignation-->
+            <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label Content="Libellé : " Width="100"/>
+                <TextBox Text="{Binding Libelle, Mode=TwoWay}" 
+                         TextWrapping="Wrap" 
+                         Width="300" />
+            </StackPanel>
+            <!--numéro de carte bancaire-->
+            <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label Content="Carte bancaire : " Width="100"/>
+                <TextBox Text="{Binding CarteBancaire, Mode=TwoWay}" 
+                         TextWrapping="Wrap" 
+                         Width="250" />
+            </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="Actif? : " Width="100"/>
+                    <CheckBox HorizontalAlignment="Center" IsChecked="{Binding IsActif}"/>
+                </StackPanel>    
+            <!-- action sur le compte -->
+            <StackPanel Margin="5" Orientation="Horizontal">
+
+                <Button HorizontalAlignment="Left"
+                                      Command="{Binding ActionSauvegarderCommand}"
+                                      Content="Enregistrer le compte"/>
+                    <Button HorizontalAlignment="Left"
+                                      Command="{Binding ActionDeleteCommand}"
+                                      Content="Supprimer le compte"/>
+                    <Button Content="Archiver ->"
+                        IsEnabled="False"
+                        Command="{Binding ActionArchiverCommand}"
+                        ToolTip="Archiver le compte pour l'année demandée"/>
+                <TextBox Text="{Binding AnneeArchive, Mode=TwoWay}" 
+                         TextWrapping="Wrap" 
+                         Width="50" />
+            </StackPanel>
+        </StackPanel>
+        </Border>
+        <Border BorderBrush="DarkGray"
+                BorderThickness="1"
+                Visibility="{Binding IsComptaSelected, Converter={StaticResource BoolToVis}}"
+                 Grid.Column="1">
+            <StackPanel DataContext="{Binding SelectedCompta}" Visibility="{Binding IsComptaSelected, Converter={StaticResource BoolToVis}}">
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="Désignation"  Width="100"/>
+                    <TextBox Text="{Binding Libelle}" MinWidth="150"/>
+                    <Button Command="{Binding ActionAjouterCommand}"
+                            Margin="10,0"
+                                Content="Ajouter un compte"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <GroupBox Header="Nouveautés et Correctifs" Grid.Column="2" >
+        <StackPanel Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <Label Content="Version 1.0.0.0" FontSize="12" FontWeight="Bold"/>
+            <Separator/>
+                <Label Content="- Après chaque filtrage, les opérations sont retriées dans l'ordre des dates" />
+                <Label Content="- Les filtres sur les colonnes sont utilisables après filtrage avancé" />
+                <Label Content="- Le changement de compte d'un opération affiche l'opération sur le compte cible s'il est ouvert" />
+                <Label Content="- Couleurs des onglets" />
+                <Separator/>
+                <Label Content="Version 1.0.0.1" FontSize="12" FontWeight="Bold"/>
+                <Separator/>
+                <Label Content="- Couleurs des boutons et dérouleurs"/>
+                <Separator/>
+                <Label Content="Version 1.0.0.2" FontSize="12" FontWeight="Bold"/>
+                <Separator/>
+                <Label Content="- Modification fonctionnement du filtre"/>
+            </StackPanel>
+         </GroupBox>
+    </Grid>
+</UserControl>
