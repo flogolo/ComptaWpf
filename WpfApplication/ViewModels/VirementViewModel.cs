@@ -280,7 +280,13 @@ namespace MaCompta.ViewModels
         /// </summary>
         public ObservableCollection<CompteViewModel> Comptes
         {
-            get { return WpfIocFactory.Instance.Comptes; }
+            get {
+                var comptes = new ObservableCollection<CompteViewModel>(WpfIocFactory.Instance.Comptes);
+                //ajout du compte vide
+                var compteExterne = Container.Resolve<CompteViewModel>();
+                comptes.Add(compteExterne);
+                return comptes; 
+            }
         }
 
         #endregion
@@ -372,21 +378,23 @@ namespace MaCompta.ViewModels
         /// <returns></returns>
         public override void SaveToModel()
         {
-            //var virement = new VirementModel
-            {
-                Model.Id = Id;
-                Model.Ordre = Ordre;
-                Model.DateDernierVirement = DateDernierVirement;
-                Model.Duree = Duree;
-                Model.Jour = Jour;
-                Model.Description = Libelle;
-                Model.Frequence = (int)Frequence;
-                Model.Montant = Montant;
-                Model.TypePaiement = PaiementHelper.GetCodePaiement(SelectedTypePaiement);
-            }
-            if (CompteSrc != null)
+            Model.Id = Id;
+            Model.Ordre = Ordre;
+            Model.DateDernierVirement = DateDernierVirement;
+            Model.Duree = Duree;
+            Model.Jour = Jour;
+            Model.Description = Libelle;
+            Model.Frequence = (int)Frequence;
+            Model.Montant = Montant;
+            Model.TypePaiement = PaiementHelper.GetCodePaiement(SelectedTypePaiement);
+            
+            //remise à 0 avant mise à jour, sinon on va garder le dernier utilisé
+            //pour pouvoir modifier un virement avec un compte vide
+            Model.CompteSrcId = 0;
+            Model.CompteDstId = 0;
+            if (CompteSrc != null && CompteSrc.Id > 0)
                 Model.CompteSrcId = CompteSrc.Id;
-            if (CompteDst != null)
+            if (CompteDst != null && CompteDst.Id > 0)
                 Model.CompteDstId = CompteDst.Id;
             foreach (var detail in DetailsList)
             {
@@ -435,9 +443,9 @@ namespace MaCompta.ViewModels
                         )
                     })
             };
-            if (CompteDst != null)
+            if (CompteDst != null && CompteDst.Id > 0)
                 model.CompteDstId = CompteDst.Id;
-            if (CompteSrc != null)
+            if (CompteSrc != null && CompteSrc.Id > 0)
                 model.CompteSrcId = CompteSrc.Id;
 
             ((IVirementService) ModelServiceBase).CreateVirementWithDetails(model);
