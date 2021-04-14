@@ -19,7 +19,7 @@ namespace DataAccess
                 _connectionString = GetNamedConnectionString(settings);
 
 #if DEBUG
-            //_connectionString = _connectionString.Replace("macompta", "macompta_test");
+            _connectionString = _connectionString.Replace("macompta", "macompta_test");
 #endif
             if (_connectionString == null)
             {

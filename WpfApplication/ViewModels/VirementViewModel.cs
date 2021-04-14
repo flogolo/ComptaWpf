@@ -416,6 +416,7 @@ namespace MaCompta.ViewModels
                 Ordre = Ordre,
                 Frequence = (int) Frequence,
                 Montant = Montant,
+                TypePaiement = PaiementHelper.GetCodePaiement(SelectedTypePaiement),
                 Details = new List<VirementDetailModel>(
                     from detail in DetailsList
                     select new VirementDetailModel
