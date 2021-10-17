@@ -17,6 +17,7 @@ namespace MaCompta.ViewModels
         {
             _operationService = opSrv;
             Model = new OperationPredefinieModel();
+            ModelName = "Opération prédéfinie";
         }
 
         #region Properties
@@ -37,7 +38,7 @@ namespace MaCompta.ViewModels
                     SelectedSousRubrique = WpfIocFactory.Instance.GetSousRubrique(_selectedRubrique, Model.SousRubriqueId);
 
                 if (SelectedRubrique != null && SelectedSousRubrique != null)
-                    return String.Format("{0}/{1}", SelectedRubrique.Libelle, SelectedSousRubrique.Libelle);
+                    return String.Format("{0}/{1} ({2})", SelectedRubrique.Libelle, SelectedSousRubrique.Libelle, Ordre);
                 return "Description NOK";
             }
         }
@@ -197,6 +198,11 @@ namespace MaCompta.ViewModels
         public int CompareTo(OperationPredefinieViewModel other)
         {
             return ToString().CompareTo(other.ToString());
+        }
+
+        public override void UpdateProperties()
+        {
+            RaisePropertyChanged(vm => vm.Description);
         }
     }
 }

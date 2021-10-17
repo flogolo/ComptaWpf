@@ -64,5 +64,9 @@ namespace MaCompta.ViewModels
             throw new NotImplementedException();
         }
 
+        public override void UpdateProperties()
+        {
+            //nothing to do
+        }
     }
 }

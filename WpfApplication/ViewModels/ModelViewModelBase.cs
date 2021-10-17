@@ -173,83 +173,15 @@ namespace MaCompta.ViewModels
         {
             MontantUpdated.Raise(this, EventArgs.Empty);
         }
+
+        /// <summary>
+        /// Permet de mettre à jour des propriétés d'affichage par des raisepropertychanged après sauvegarde
+        /// </summary>
+        public abstract void UpdateProperties();
+
         #endregion
 
-        #region Commands
-        //private ICommand m_AnnulerCommand;
-        ///// <summary>
-        ///// Commande de sauvegarde
-        ///// </summary>
-        //public ICommand AnnulerCommand
-        //{
-        //    get
-        //    {
-        //        if (m_AnnulerCommand == null)
-        //        {
-        //            m_AnnulerCommand = new RelayCommand(param => Annuler());
-        //        }
-        //        return m_AnnulerCommand;
-        //    }
-        //}
-
-
-        //private ICommand m_ActionSauvegarderCommand;
-        ///// <summary>
-        ///// Commande de sauvegarde
-        ///// </summary>
-        //public ICommand ActionSauvegarderCommand
-        //{
-        //    get
-        //    {
-        //        if (m_ActionSauvegarderCommand == null)
-        //        {
-        //            m_ActionSauvegarderCommand = new RelayCommand(param => ActionSauvegarder());
-        //        }
-        //        return m_ActionSauvegarderCommand;
-        //    }
-        //}
-
-        //private ICommand m_ActionSupprimerCommand;
-        ///// <summary>
-        ///// Commande de suppression
-        ///// </summary>
-        //public ICommand ActionSupprimerCommand
-        //{
-        //    get
-        //    {
-        //        if (m_ActionSupprimerCommand == null)
-        //        {
-        //            m_ActionSupprimerCommand = new RelayCommand(param => ActionSupprimer());
-        //        }
-        //        return m_ActionSupprimerCommand;
-        //    }
-        //}
-
-        //private void DemandeSupprimer()
-        //{
-        //    if (MessageBox.Show("Etes-vous sûr de vouloir supprimer cet élément?", "Suppression", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-        //        ActionSupprimer();
-        //}
-
-        //private ICommand m_ActionDupliquerCommand;
-        ///// <summary>
-        ///// Commande de duplication
-        ///// </summary>
-        //public ICommand ActionDupliquerCommand
-        //{
-        //    get
-        //    {
-        //        if (m_ActionDupliquerCommand == null)
-        //        {
-        //            m_ActionDupliquerCommand = new RelayCommand(param => ActionDupliquer());
-        //        }
-        //        return m_ActionDupliquerCommand;
-        //    }
-        //}
-        #endregion     
-
         #region Methods
-
 
         /// <summary>
         /// Duplication d'un élément
@@ -300,6 +232,7 @@ namespace MaCompta.ViewModels
                 //Model = saved;
                 IsNew = false;
                 IsModified = false;
+                UpdateProperties();
                 LogMessage("{0} créé(e) : {1}", ModelName, ToString());
             }
             else if (IsModified)
@@ -307,6 +240,7 @@ namespace MaCompta.ViewModels
                 SaveToModel();
                 ModelServiceBase.UpdateItem(Model);
                 IsModified = false;
+                UpdateProperties();
                 LogMessage("{0} mis(e) à jour : {1}", ModelName, ToString());
             }
             RaiseSavedEvent();

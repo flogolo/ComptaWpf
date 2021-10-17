@@ -89,6 +89,14 @@ namespace MaCompta.ViewModels
             }
         }
 
+        internal void RemoveOperationPredefinieToMenu(OperationPredefinieViewModel opVm)
+        {
+            foreach (var compteVm in OpenedComptes)
+            {
+                compteVm.RemoveOperationPredefinieToMenu(opVm);
+            }
+        }
+
         internal void AddOpenedCompte(CompteViewModel cvm)
         {
             OpenedComptes.Add(cvm);

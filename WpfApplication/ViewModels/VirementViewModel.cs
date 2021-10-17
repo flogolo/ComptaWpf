@@ -649,5 +649,9 @@ namespace MaCompta.ViewModels
             }
         }
 
+        public override void UpdateProperties()
+        {
+            //nothing to do
+        }
     }
 }

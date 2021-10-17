@@ -810,5 +810,9 @@ namespace MaCompta.ViewModels
         {
             return Model != null ? string.Format("#{0} {1} {2}", Model.Id, Model.Ordre, Montant) : string.Empty;
         }
+        public override void UpdateProperties()
+        {
+            //nothing to do
+        }
     }
 }

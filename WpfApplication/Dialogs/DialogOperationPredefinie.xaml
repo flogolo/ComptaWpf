@@ -11,15 +11,16 @@
                           SelectedItem="{Binding SelectedOperationPredefinie, Mode=TwoWay}"
                           ItemsSource="{Binding OperationsPredefinies}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Width="Auto" Command="{Binding AjouterOperationPredefinieCommand}">Créer une nouvelle opération</Button>
+                    <Button Width="Auto" Command="{Binding AjouterOperationPredefinieCommand}">Créer</Button>
+                    <Button Width="Auto" Command="{Binding SupprimerOperationPredefinieCommand}" IsEnabled="{Binding IsEnabledEdition}">Supprimer</Button>
                     <Button Width="Auto" Click="CloseButtonClick">Fermer</Button>
                 </StackPanel>
             </StackPanel>
-            <Border BorderThickness="1" BorderBrush="Blue">
+            <Border BorderThickness="1" BorderBrush="Blue" IsEnabled="{Binding IsEnabledEdition}"  Margin="20,10">
                 <StackPanel DataContext="{Binding SelectedOperationPredefinie}"
-                            Margin="20,10"
-          Background="{Binding IsModified, Converter={StaticResource BoolToColorConverter}}" 
+                  Background="{Binding IsModified, Converter={StaticResource BoolToColorConverter}}" 
                     HorizontalAlignment="Center">
+                    <TextBlock Margin="5" FontStyle="Italic">Sélectionnez ou créez une nouvelle opération pour saisir ses propriétés</TextBlock>
                     <Label Content="{Binding Description}" HorizontalAlignment="Center" FontWeight="Bold" Height="30"/>
                     <!-- prédéfinie - Ordre -->
                     <StackPanel Margin="5" Orientation="Horizontal">
@@ -56,7 +57,7 @@
                              Text="{Binding Commentaire, Mode=TwoWay}" Width="200" />
                     </StackPanel>
                     <!--actions sur prédéfinie-->
-                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="10">
                         <Button Command="{Binding ActionSauvegarderCommand}"
                                       Content="Enregistrer l'opération"/>
                     </StackPanel>
