@@ -694,10 +694,10 @@ namespace MaCompta.ViewModels
         {
             OperationsList.Add(vm);
             EventsInit(vm);
-            //AddFilteredOperation(vm);
             if (vm.FilterDate(_filtreType, _filtreDate1, _filtreDate2))
                 FilteredOperationsList.Add(vm);
             CollectionView.MoveCurrentTo(vm);
+            CalculSoldes();
         }
 
         [BaseCommand("ActionValiderCommand")]
@@ -917,6 +917,7 @@ namespace MaCompta.ViewModels
             /// </summary>
         public void RemoveSelectedOperation()
         {
+            //System.Diagnostics.Debug.WriteLine("RemoveSelectedOperation");
             OperationsList.Remove(SelectedOperation);
             FilteredOperationsList.Remove(SelectedOperation);
             CalculSoldes();

@@ -1,13 +1,13 @@
 ﻿<Window x:Class="MaCompta.Dialogs.DialogOperationPredefinie"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:MaCompta.Controls"
-        Title="Opération prédéfinie" Height="443.131" Width="627.495">
+        SizeToContent="WidthAndHeight"
+        Title="Opération prédéfinie">
     <Grid>
         <StackPanel>
-            <StackPanel Width="400"  Margin="0,5">
+            <StackPanel Margin="0,5">
                 <Label HorizontalAlignment="Center" Margin="0,5">Sélectionner l'opération à modifier ou cliquer sur Créer</Label>
-                <ComboBox DisplayMemberPath="Description"  Margin="0,5"
+                <ComboBox DisplayMemberPath="Description"  Margin="20,5"
                           SelectedItem="{Binding SelectedOperationPredefinie, Mode=TwoWay}"
                           ItemsSource="{Binding OperationsPredefinies}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -15,8 +15,9 @@
                     <Button Width="Auto" Click="CloseButtonClick">Fermer</Button>
                 </StackPanel>
             </StackPanel>
-            <Border BorderThickness="1" BorderBrush="Blue" Width="400">
+            <Border BorderThickness="1" BorderBrush="Blue">
                 <StackPanel DataContext="{Binding SelectedOperationPredefinie}"
+                            Margin="20,10"
           Background="{Binding IsModified, Converter={StaticResource BoolToColorConverter}}" 
                     HorizontalAlignment="Center">
                     <Label Content="{Binding Description}" HorizontalAlignment="Center" FontWeight="Bold" Height="30"/>
