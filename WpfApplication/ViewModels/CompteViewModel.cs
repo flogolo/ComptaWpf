@@ -174,6 +174,14 @@ namespace MaCompta.ViewModels
                 Id = item.Id
             });
         }
+        public void RemoveOperationPredefinieToMenu(OperationPredefinieViewModel item)
+        {
+            var menuItem = menuPredifined.MenuItems.FirstOrDefault(m => m.Id == item.Id);
+            if (menuItem != null)
+            {
+                menuPredifined.MenuItems.Remove(menuItem);
+            }
+        }
 
         private void CreerOperationPredefinie(OperationPredefinieViewModel operationPredefinieViewModel)
         {
@@ -961,6 +969,11 @@ namespace MaCompta.ViewModels
                 _selectedOperation = null;
             }
             base.Dispose(disposing);
+        }
+
+        public override void UpdateProperties()
+        {
+            //nothing to do
         }
     }
 

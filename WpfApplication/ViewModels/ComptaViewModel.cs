@@ -108,5 +108,9 @@ namespace MaCompta.ViewModels
                 Comptes.Remove(vm);
             }
         }
+        public override void UpdateProperties()
+        {
+            //nothing to do
+        }
     }
 }
