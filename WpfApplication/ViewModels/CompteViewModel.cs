@@ -139,7 +139,7 @@ namespace MaCompta.ViewModels
 
         private void InitMenu()
         {
-            ComptesMainMenuItems.Add(new MenuItemViewModel(null) { Header = CompteLibelle + " > " });
+            ComptesMainMenuItems.Add(new MenuItemViewModel(null) { Header = CompteHeader + " > " });
             var menuOperations = new MenuItemViewModel(null) { Header = "Opérations" };
             ComptesMainMenuItems.Add(menuOperations);
             menuOperations.MenuItems.Add(new MenuItemViewModel(CommandAjouterOperation) { Header = "Ajouter une opération" });
