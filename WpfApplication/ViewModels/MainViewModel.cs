@@ -14,7 +14,7 @@ using MaCompta.Commands;
 
 namespace MaCompta.ViewModels
 {
-    public class MainViewModel: ViewModelBase<MainViewModel>
+    public class MainViewModel : ViewModelBase<MainViewModel>
     {
         #region Membres
         private readonly IComptaService _comptaService;
@@ -29,9 +29,9 @@ namespace MaCompta.ViewModels
         /// <summary>
         /// Constructeur
         /// </summary>
-        public MainViewModel(IContainer container, 
-            IComptaService comptaService, 
-            IBanqueService banqueService, 
+        public MainViewModel(IContainer container,
+            IComptaService comptaService,
+            IBanqueService banqueService,
             ICompteService compteService,
             IOperationPredefinieService operationPredefinieService,
             IOperationService opService
@@ -73,7 +73,7 @@ namespace MaCompta.ViewModels
                 if (id != null)
                 {
                     SelectedCompte = WpfIocFactory.Instance.Comptes.FirstOrDefault(c => c.Id == id.Value);
-                    if(SelectedCompte.Id > 0)
+                    if (SelectedCompte.Id > 0)
                         SelectedCompteChanged(this, new EventArgs<CompteViewModel> { Data = SelectedCompte });
                 }
             });
@@ -259,9 +259,22 @@ namespace MaCompta.ViewModels
         public ComptaViewModel SelectedCompta { get; set; }
 
         public bool IsComptaSelected { get { return SelectedCompta != null; } }
+
+        public bool HasError { get; private set; }
         #endregion
 
         #region Méthodes
+
+        public bool TestDatabase()
+        {
+            var isTestOk = _comptaService.TestConnexion();
+            if(!isTestOk)
+            {
+                Messages.Add("Erreur de connexion à la base");
+            }
+            return isTestOk;
+        }
+
         /// <summary>
         /// Chargement des données
         /// </summary>
@@ -315,6 +328,7 @@ namespace MaCompta.ViewModels
 
         void ComptaServiceErrorOccured(object sender, ErrorEventArgs e)
         {
+            HasError = true;
             MessageBoxShow(null, e.ErrorMessage, "Erreur d'accès au service");
             //DisplayMessage(e.ErrorMessage);
         }
