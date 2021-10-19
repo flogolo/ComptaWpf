@@ -174,6 +174,14 @@ namespace MaCompta.ViewModels
                 Id = item.Id
             });
         }
+        public void RemoveOperationPredefinieToMenu(OperationPredefinieViewModel item)
+        {
+            var menuItem = menuPredifined.MenuItems.FirstOrDefault(m => m.Id == item.Id);
+            if (menuItem != null)
+            {
+                menuPredifined.MenuItems.Remove(menuItem);
+            }
+        }
 
         private void CreerOperationPredefinie(OperationPredefinieViewModel operationPredefinieViewModel)
         {
@@ -694,10 +702,10 @@ namespace MaCompta.ViewModels
         {
             OperationsList.Add(vm);
             EventsInit(vm);
-            //AddFilteredOperation(vm);
             if (vm.FilterDate(_filtreType, _filtreDate1, _filtreDate2))
                 FilteredOperationsList.Add(vm);
             CollectionView.MoveCurrentTo(vm);
+            CalculSoldes();
         }
 
         [BaseCommand("ActionValiderCommand")]
@@ -917,6 +925,7 @@ namespace MaCompta.ViewModels
             /// </summary>
         public void RemoveSelectedOperation()
         {
+            //System.Diagnostics.Debug.WriteLine("RemoveSelectedOperation");
             OperationsList.Remove(SelectedOperation);
             FilteredOperationsList.Remove(SelectedOperation);
             CalculSoldes();
@@ -960,6 +969,11 @@ namespace MaCompta.ViewModels
                 _selectedOperation = null;
             }
             base.Dispose(disposing);
+        }
+
+        public override void UpdateProperties()
+        {
+            //nothing to do
         }
     }
 

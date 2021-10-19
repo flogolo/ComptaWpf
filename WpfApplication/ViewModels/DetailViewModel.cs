@@ -162,5 +162,9 @@ namespace MaCompta.ViewModels
                 SelectedSousRubrique == null ? "" : SelectedSousRubrique.Libelle,
                 Montant);
         }
+        public override void UpdateProperties()
+        {
+            //nothing to do
+        }
     }
 }

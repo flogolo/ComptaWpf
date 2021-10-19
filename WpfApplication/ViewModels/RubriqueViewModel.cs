@@ -81,5 +81,9 @@ namespace MaCompta.ViewModels
             SousRubriques.Add(vm);
         }
 
+        public override void UpdateProperties()
+        {
+            //nothing to do
+        }
     }
 }
