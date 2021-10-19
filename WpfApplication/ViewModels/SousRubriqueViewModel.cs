@@ -61,43 +61,13 @@ namespace MaCompta.ViewModels
             throw new NotImplementedException();
         }
 
-        //public override void  ActionSauvegarder()
-        //{
-        //    WpfIocFactory.Instance.LogMessage("Sous-rubrique en cours de sauvegarde...");
-        //    if (IsNew)
-        //    {
-        //        var saved = ModelServiceBase.CreateItem(SaveToModel());
-        //        WpfIocFactory.Instance.LogMessage("Sous-rubrique créée");
-        //        Id = saved.Id;
-        //        Model = saved;
-        //        IsNew = false;
-        //        IsModified = false;
-        //    }
-        //    else
-        //    {
-        //        var saved = SaveToModel();
-        //        ModelServiceBase.UpdateItem(saved);
-        //        Model = saved;
-        //        IsModified = false;
-        //        WpfIocFactory.Instance.LogMessage("Sous-rubrique mise à jour");
-        //    }
-        //}
-
-        //public override void ActionDupliquer()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public override void ActionSupprimer()
-        //{
-        //    if (!IsNew)
-        //        m_SousRubriqueSrv.DeleteItem(Id);
-        //    RaiseDeletedEvent(this);
-        //}
-
         public int CompareTo(SousRubriqueViewModel other)
         {
             return String.Compare(Libelle, other.Libelle, StringComparison.CurrentCulture);
+        }
+        public override void UpdateProperties()
+        {
+            //nothing to do
         }
     }
 }

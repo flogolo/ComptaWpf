@@ -1,4 +1,5 @@
 ﻿using CommonLibrary.IOC;
+using CommonLibrary.Models;
 using CommonLibrary.Tools;
 using MaCompta.Commands;
 using System.Linq;
@@ -19,7 +20,13 @@ namespace MaCompta.ViewModels
         public OperationsPredefiniesViewModel(IContainer container):base(container)
         {
             OperationsPredefinies = WpfIocFactory.Instance.OperationsPredefinies;
-                //new SortableObservableCollection<OperationPredefinieViewModel>();
+            //tri à l'ouverture de la fenêtre
+            OperationsPredefinies.Sort();
+        }
+
+        public bool IsEnabledEdition
+        {
+            get { return SelectedOperationPredefinie != null; }
         }
 
         private OperationPredefinieViewModel _selectedOperationPredefinie;
@@ -30,9 +37,9 @@ namespace MaCompta.ViewModels
             {
                 _selectedOperationPredefinie = value;
                 RaisePropertyChanged(vm => vm.SelectedOperationPredefinie);
+                RaisePropertyChanged(vm => IsEnabledEdition);
             }
         }
-
 
         [BaseCommand("AjouterOperationPredefinieCommand")]
         public void AjouterOperationPredefinie()
@@ -45,6 +52,28 @@ namespace MaCompta.ViewModels
             SelectedOperationPredefinie = OperationsPredefinies.Last();
 
             OperationsPredefinies.Sort();
+        }
+
+        [BaseCommand("SupprimerOperationPredefinieCommand")]
+        public void SupprimerOperationPredefinie()
+        {
+            //demander confirmation
+            if (SelectedOperationPredefinie != null) 
+            {
+                SelectedOperationPredefinie.ViewModelDeleted += SelectedOperationPredefinie_ViewModelDeleted;
+                SelectedOperationPredefinie.ActionSupprimer();
+            }
+        }
+
+        private void SelectedOperationPredefinie_ViewModelDeleted(object sender, EventArgs<OperationPredefinieModel> e)
+        {
+            SelectedOperationPredefinie.ViewModelDeleted -= SelectedOperationPredefinie_ViewModelDeleted;
+            //supprimer du menu
+            WpfIocFactory.Instance.MainVm.RemoveOperationPredefinieToMenu(SelectedOperationPredefinie);
+            //supprimer de la liste
+            OperationsPredefinies.Remove(SelectedOperationPredefinie);
+            //remettre à null l'operation selectionnée
+            SelectedOperationPredefinie = null;
         }
 
         private void OperationPredefinieViewModelSaved(object sender, EventArgs<CommonLibrary.Models.OperationPredefinieModel> e)

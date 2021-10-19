@@ -32,15 +32,16 @@ namespace MaCompta
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 _mainVm = WpfIocFactory.Instance.MainVm;
-
                 Loaded += MainWindowLoaded;
-                _mainVm.DisplayMessage("Chargement des données...");
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                    new NoArgDelegate(_mainVm.LoadMain));
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                    new NoArgDelegate(WpfIocFactory.Instance.RubriquesVm.LoadRubriques));
-                LoadVirements();
-
+                if (_mainVm.TestDatabase())
+                {
+                    _mainVm.DisplayMessage("Chargement des données...");
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new NoArgDelegate(_mainVm.LoadMain));
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new NoArgDelegate(WpfIocFactory.Instance.RubriquesVm.LoadRubriques));
+                    LoadVirements();
+                }
                 AddHandler(CloseableTabItem.CloseTabEvent, new RoutedEventHandler(CloseTab));
             }
         }

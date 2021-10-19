@@ -155,5 +155,18 @@ namespace DataAccess.Managers
             if (LogRequested!=null)
                 LogRequested(this, new EventArgs<string>(message));
         }
+
+        public bool TestConnexion()
+        {
+            try
+            {
+                var session = HibernateTools.Instance.Session;
+                return true;
+            } catch(Exception e)
+            {
+                RaiseErrorOccured("Impossible de se connecter à la base de données " + e.Message);
+                return false;
+            }
+        }
     }
 }

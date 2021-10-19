@@ -17,7 +17,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         
         <controls:MyTreeView  HorizontalAlignment="Left" 
@@ -125,23 +125,21 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <GroupBox Header="Nouveautés et Correctifs" Grid.Column="2" >
-        <StackPanel Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <Label Content="Version 1.0.0.0" FontSize="12" FontWeight="Bold"/>
-            <Separator/>
-                <Label Content="- Après chaque filtrage, les opérations sont retriées dans l'ordre des dates" />
-                <Label Content="- Les filtres sur les colonnes sont utilisables après filtrage avancé" />
-                <Label Content="- Le changement de compte d'un opération affiche l'opération sur le compte cible s'il est ouvert" />
-                <Label Content="- Couleurs des onglets" />
-                <Separator/>
-                <Label Content="Version 1.0.0.1" FontSize="12" FontWeight="Bold"/>
-                <Separator/>
-                <Label Content="- Couleurs des boutons et dérouleurs"/>
-                <Separator/>
-                <Label Content="Version 1.0.0.2" FontSize="12" FontWeight="Bold"/>
-                <Separator/>
-                <Label Content="- Modification fonctionnement du filtre"/>
-            </StackPanel>
+        <GroupBox Header="Nouveautés et Correctifs" Grid.Column="2" 
+                  Foreground="{StaticResource MenuBackground}" 
+                  FontWeight="Bold">
+                <ListBox ItemsSource="{Binding VersionsList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <!--<Border BorderThickness="1" BorderBrush="{StaticResource MenuBackground}">-->
+                                <StackPanel Orientation="Vertical">
+                                    <Label Content="{Binding Path=VersionToString}" FontSize="12"/>
+                                    <Label Content="{Binding Path=ModificationsToString}" FontWeight="Normal"/>
+                                </StackPanel>
+                            <!--</Border>-->
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
          </GroupBox>
     </Grid>
 </UserControl>

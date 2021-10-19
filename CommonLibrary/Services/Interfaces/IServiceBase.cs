@@ -54,5 +54,7 @@ namespace CommonLibrary.Services.Interfaces
 
         event EventHandler<ErrorEventArgs> ErrorOccured;
         event EventHandler<EventArgs<String>> LogRequested;
+
+        bool TestConnexion();
     }
 }
