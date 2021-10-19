@@ -288,6 +288,7 @@
     <Compile Include="ViewModels\OperationViewModel.cs" />
     <Compile Include="ViewModels\StatistiquesViewModel.cs" />
     <Compile Include="ViewModels\StatModels.cs" />
+    <Compile Include="ViewModels\VersionModifications.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\SousRubriqueViewModel.cs" />
     <Compile Include="ViewModels\RubriqueViewModel.cs" />

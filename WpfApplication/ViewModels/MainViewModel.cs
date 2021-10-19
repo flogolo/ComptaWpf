@@ -11,6 +11,7 @@ using System.Threading;
 using System.Collections.Specialized;
 using System.Windows.Input;
 using MaCompta.Commands;
+using System.Collections.Generic;
 
 namespace MaCompta.ViewModels
 {
@@ -77,15 +78,23 @@ namespace MaCompta.ViewModels
                         SelectedCompteChanged(this, new EventArgs<CompteViewModel> { Data = SelectedCompte });
                 }
             });
+            VersionsList = new List<VersionModifications>();
+            VersionModifications.FillVersions(VersionsList);
         }
-
-        public Collection<CompteViewModel> OpenedComptes = new Collection<CompteViewModel>();
 
         internal void AddOperationPredefinieToMenu(OperationPredefinieViewModel opVm)
         {
             foreach (var compteVm in OpenedComptes)
             {
                 compteVm.AddOperationPredefinieToMenu(opVm);
+            }
+        }
+
+        internal void RemoveOperationPredefinieToMenu(OperationPredefinieViewModel opVm)
+        {
+            foreach (var compteVm in OpenedComptes)
+            {
+                compteVm.RemoveOperationPredefinieToMenu(opVm);
             }
         }
 
@@ -159,6 +168,10 @@ namespace MaCompta.ViewModels
         #endregion
 
         #region Properties
+
+        public List<VersionModifications> VersionsList { get; private set; }
+
+        public Collection<CompteViewModel> OpenedComptes = new Collection<CompteViewModel>();
 
         public ICommand CommandSelectCompte { get; private set; }
 
