@@ -32,15 +32,16 @@ namespace MaCompta
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 _mainVm = WpfIocFactory.Instance.MainVm;
-
                 Loaded += MainWindowLoaded;
-                _mainVm.DisplayMessage("Chargement des données...");
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                    new NoArgDelegate(_mainVm.LoadMain));
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                    new NoArgDelegate(WpfIocFactory.Instance.RubriquesVm.LoadRubriques));
-                LoadVirements();
-
+                if (_mainVm.TestDatabase())
+                {
+                    _mainVm.DisplayMessage("Chargement des données...");
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new NoArgDelegate(_mainVm.LoadMain));
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new NoArgDelegate(WpfIocFactory.Instance.RubriquesVm.LoadRubriques));
+                    LoadVirements();
+                }
                 AddHandler(CloseableTabItem.CloseTabEvent, new RoutedEventHandler(CloseTab));
             }
         }
@@ -169,7 +170,30 @@ namespace MaCompta
                         var result = dlg3.ShowDialog();
                         if (result.HasValue && result.Value)
                         {
-                            dc.ChangeCompte(message.CompteVM, _mainVm);
+                            dc.SelectedOperation.CompteId = dc.SelectedCompte.Id;
+                            dc.SelectedOperation.IsModified = true;
+                            foreach (var detail in dc.SelectedOperation.DetailsList)
+                            {
+                                if (dc.IsInverse)
+                                {
+                                    detail.Montant = -detail.Montant;
+                                }
+                                else
+                                {
+                                    detail.Montant = detail.Montant;
+                                }
+                            }
+
+                            dc.SelectedOperation.ActionSauvegarder();
+                            //suppression de l'opération de la liste des opérations du compte sélectionné
+                            message.CompteVM.RemoveSelectedOperation();
+                            //recherche si le compte cible est ouvert
+                            var compteVmDst = _mainVm.OpenedComptes.FirstOrDefault(c => c.Id == dc.SelectedCompte.Id);
+                            if( compteVmDst != null)
+                            {
+                                //s'il est ouvert -> ajout de l'opération
+                                compteVmDst.AddOperationViewModel(dc.SelectedOperation);
+                            }
                         }
                     }
                     break;
