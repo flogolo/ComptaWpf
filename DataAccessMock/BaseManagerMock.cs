@@ -97,6 +97,9 @@ namespace DataAccessMock
             System.Diagnostics.Debug.WriteLine("{0} : {1}", DateTime.Now, message);
         }
 
-
+        public bool TestConnexion()
+        {
+            return true;
+        }
     }
 }
