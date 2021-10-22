@@ -273,7 +273,7 @@ namespace MaCompta.ViewModels
 
         public bool IsComptaSelected { get { return SelectedCompta != null; } }
 
-        public bool HasError { get; private set; }
+        public string MessageError { get; private set; }
         #endregion
 
         #region Méthodes
@@ -284,6 +284,7 @@ namespace MaCompta.ViewModels
             if(!isTestOk)
             {
                 Messages.Add("Erreur de connexion à la base");
+                Messages.Add(MessageError);
             }
             return isTestOk;
         }
@@ -341,7 +342,7 @@ namespace MaCompta.ViewModels
 
         void ComptaServiceErrorOccured(object sender, ErrorEventArgs e)
         {
-            HasError = true;
+            MessageError = e.ErrorMessage;
             MessageBoxShow(null, e.ErrorMessage, "Erreur d'accès au service");
             //DisplayMessage(e.ErrorMessage);
         }
