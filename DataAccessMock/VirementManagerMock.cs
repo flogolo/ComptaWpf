@@ -24,14 +24,6 @@ namespace DataAccessMock
             AllOrdres = new SortableObservableCollection<string>();
         }
 
-        public void UpdateItems(IEnumerable<VirementModel> list)
-        {
-            foreach (var model in list)
-            {
-                UpdateItem(model);
-            }
-        }
-
         public override void CopyTo(VirementModel modelDst, VirementModel modelSrc)
         {
             modelDst.CompteDstId = modelSrc.CompteDstId;

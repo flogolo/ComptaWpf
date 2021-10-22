@@ -24,7 +24,7 @@ namespace ConsoleComptaTest
             var virementMock = WpfIocFactoryMock.Instance.Container.Resolve<IVirementService>();
             var operationMock = WpfIocFactoryMock.Instance.Container.Resolve<IOperationService>();
 
-            var manager = new VirementsManager(virementMock, operationMock);
+            var manager = new VirementsTools(virementMock, operationMock);
 
             var maintenant = new DateTime(2014,5,2);
             //var dernier = new DateTime(maintenant.Year, maintenant.Month, 1);
@@ -67,7 +67,7 @@ namespace ConsoleComptaTest
             var virementMock = WpfIocFactoryMock.Instance.Container.Resolve<IVirementService>();
             var operationMock = WpfIocFactoryMock.Instance.Container.Resolve<IOperationService>();
 
-            var manager = new VirementsManager(virementMock, operationMock);
+            var manager = new VirementsTools(virementMock, operationMock);
             manager.GetAllMonths(new DateTime(2014,3,25), -1, DateTime.Now , 5,FrequenceEnum.Mensuel);        
         }
 

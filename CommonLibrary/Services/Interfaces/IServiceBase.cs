@@ -56,5 +56,9 @@ namespace CommonLibrary.Services.Interfaces
         event EventHandler<EventArgs<String>> LogRequested;
 
         bool TestConnexion();
+
+        void BeginTransaction();
+        void CommitTransaction();
+        void EndTransaction();
     }
 }

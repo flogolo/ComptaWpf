@@ -19,12 +19,6 @@ namespace CommonLibrary.Services.Interfaces
         ///// <param name="operationId">identifiant de l'opération</param>
         //void DeleteOperation(int operationId);
 
-        /// <summary>
-        /// Mise à jour d'une liste d'opérations
-        /// </summary>
-        /// <param name="list"></param>
-        void UpdateItems(IEnumerable<OperationModel> list);
-
         void CreateOperationWithDetails(OperationModel model);
 
         string FindCheque(string value);

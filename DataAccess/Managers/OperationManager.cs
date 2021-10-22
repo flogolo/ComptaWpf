@@ -46,10 +46,9 @@ namespace DataAccess.Managers
                 AllOperations.Clear();
                 var session = HibernateTools.Instance.Session;
 
-                var tx = session.BeginTransaction();
-
+                //var tx = session.BeginTransaction();
                 var operations = session.CreateQuery("from " + ModelName).List<OperationModel>();
-                tx.Commit();
+                //tx.Commit();
 
                 //chargement des détails
                 _DetailSrv.LoadItems();
@@ -97,33 +96,19 @@ namespace DataAccess.Managers
         {
             Debug(String.Format("Updating {0} {1} ...", ModelName, model.Id));
 
-            var session = HibernateTools.Instance.Session;
-
             var item = AllOperations.FirstOrDefault(i => i.Id == model.Id);
             CopyTo(item, model);
 
-            var tx = session.BeginTransaction();
-            var data = session.Get<OperationModel>(model.Id);
+            BeginTransaction();
+            var data = Session.Get<OperationModel>(model.Id);
             if (data != null)
             {
                 CopyTo(data, model);
                 data.UpdatedAt = DateTime.Now;
-                session.Update(data);
+                Session.Update(data);
             }
 
-            tx.Commit();
-        }
-
-        public void UpdateItems(IEnumerable<OperationModel> list)
-        {
-            foreach (var operationModel in list)
-            {
-                UpdateItem(operationModel);
-                foreach (var detail in operationModel.Details)
-                {
-                    _DetailSrv.UpdateItem(detail);
-                }
-            }
+            CommitTransaction();
         }
 
         public void CreateOperationWithDetails(OperationModel model)
@@ -177,6 +162,7 @@ namespace DataAccess.Managers
 
         public override void DeleteItem(long itemId, bool cascade)
         {
+            BeginTransaction();
             var operation = AllOperations.First(o=>o.Id == itemId);
             //supprimer ordre si il n'apparait qu'une seule fois
             var ordre = AllOrdres.Where(o => o == operation.Ordre);
@@ -193,6 +179,7 @@ namespace DataAccess.Managers
             //supprimer l'opération de la liste des opérations
             AllOperations.Remove(operation);
             base.DeleteItem(itemId, cascade);
+            EndTransaction();
         }
 
         public override void CreateItem(OperationModel model)
