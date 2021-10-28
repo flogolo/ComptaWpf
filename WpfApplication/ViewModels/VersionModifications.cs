@@ -33,6 +33,9 @@ namespace MaCompta.ViewModels
         /// </summary>
         public static void FillVersions(List<VersionModifications> versions)
         {
+            var v9 = new VersionModifications("1.0.0.9");
+            v9.Modifications.Add("Utilisation de transactions pour mettre à jour les données en base");
+            versions.Add(v9);
             var v8 = new VersionModifications("1.0.0.8");
             v8.Modifications.Add("Ajout du libellé du compte dans le menu des opérations");
             versions.Add(v8);
