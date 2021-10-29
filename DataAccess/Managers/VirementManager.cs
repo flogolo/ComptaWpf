@@ -57,14 +57,6 @@ namespace DataAccess.Managers
             Debug(String.Format("VirementMontantModel loaded ({1} items)", ModelName, _montantService.ItemsList.Count));
         }
 
-        public void UpdateItems(IEnumerable<VirementModel> list)
-        {
-            foreach (var model in list)
-            {
-                UpdateItem(model);
-            }
-        }
-
         public override void CopyTo(VirementModel modelDst, VirementModel modelSrc)
         {
             modelDst.CompteDstId = modelSrc.CompteDstId;
@@ -97,6 +89,7 @@ namespace DataAccess.Managers
 
         public override void DeleteItem(long itemId, bool cascade)
         {
+            BeginTransaction();
             if (cascade)
             {
                 var virement = ItemsList.First(o => o.Id == itemId);
@@ -111,6 +104,7 @@ namespace DataAccess.Managers
                 }
             }
             base.DeleteItem(itemId, cascade);
+            EndTransaction();
         }
     }
 }

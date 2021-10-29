@@ -302,7 +302,7 @@ namespace MaCompta.ViewModels
         /// </summary>
         public void EffectuerVirements()
         {
-            var manager = new VirementsManager(_virementSrv, _operationSrv);
+            var manager = new VirementsTools(_virementSrv, _operationSrv);
             //ou comptesvm s'abonne à un changement de collection des opérations
             manager.LogMessageRequested += ManagerLogMessageRequested;
             manager.VirementsAdded += ManagerVirementsAdded;

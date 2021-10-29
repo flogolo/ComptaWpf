@@ -89,7 +89,7 @@
     <Compile Include="IOC\SimpleIocContainer.cs" />
     <Compile Include="IOC\TypeNotRegisteredException.cs" />
     <Compile Include="Managers\DatesVirement.cs" />
-    <Compile Include="Managers\VirementsManager.cs" />
+    <Compile Include="Managers\VirementsTools.cs" />
     <Compile Include="Models\BanqueModel.cs" />
     <Compile Include="Models\ComptaModel.cs" />
     <Compile Include="Models\CompteModel.cs" />
