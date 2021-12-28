@@ -10,6 +10,7 @@ using CommonLibrary.Tools;
 using MaCompta.Commands;
 using GalaSoft.MvvmLight.Threading;
 using System.Linq;
+using System.Threading;
 
 namespace MaCompta.ViewModels
 {
@@ -337,7 +338,12 @@ namespace MaCompta.ViewModels
             //Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
               //  new StringArgDelegate(LogMessage),
                 //e.Data);
-            DispatcherHelper.CheckBeginInvokeOnUI(()=>LogMessage(e.Data));
+            //DispatcherHelper.CheckBeginInvokeOnUI(()=>LogMessage(e.Data));
+            var uiContext = SynchronizationContext.Current;
+            if (uiContext != null)
+            {
+                uiContext.Send(x => LogMessage(e.Data), null);
+            }
         }
 
         #endregion
