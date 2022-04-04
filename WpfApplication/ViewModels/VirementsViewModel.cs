@@ -10,7 +10,6 @@ using CommonLibrary.Tools;
 using MaCompta.Commands;
 using GalaSoft.MvvmLight.Threading;
 using System.Linq;
-using System.Threading;
 
 namespace MaCompta.ViewModels
 {
@@ -38,7 +37,7 @@ namespace MaCompta.ViewModels
         {
             _operationSrv = opSrv;
             _virementSrv = virementSrv;
-            _virementSrv.LogRequested += (s,e) => Container.Resolve<MainViewModel>().DisplayMessage(e.Data);
+            _virementSrv.LogRequested += (s,e) => LogMessageRequested(s, e);
             Virements = new List<VirementViewModel>();
             FilteredVirements = new ObservableCollection<VirementViewModel>();
             CollectionView = CollectionViewSource.GetDefaultView(FilteredVirements);
@@ -305,7 +304,7 @@ namespace MaCompta.ViewModels
         {
             var manager = new VirementsTools(_virementSrv, _operationSrv);
             //ou comptesvm s'abonne à un changement de collection des opérations
-            manager.LogMessageRequested += ManagerLogMessageRequested;
+            manager.LogMessageRequested += LogMessageRequested;
             manager.VirementsAdded += ManagerVirementsAdded;
             var fetcher = new OneArgDelegate(
                 manager.EffectuerVirementsNew);
@@ -331,19 +330,9 @@ namespace MaCompta.ViewModels
             });
         }
 
-        //private delegate void StringArgDelegate(String arg);
-
-        void ManagerLogMessageRequested(object sender, EventArgs<string> e)
+        void LogMessageRequested(object sender, EventArgs<string> e)
         {
-            //Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-              //  new StringArgDelegate(LogMessage),
-                //e.Data);
-            //DispatcherHelper.CheckBeginInvokeOnUI(()=>LogMessage(e.Data));
-            var uiContext = SynchronizationContext.Current;
-            if (uiContext != null)
-            {
-                uiContext.Send(x => LogMessage(e.Data), null);
-            }
+            LogMessage(e.Data);
         }
 
         #endregion
