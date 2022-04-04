@@ -163,7 +163,6 @@ namespace DataAccess.Managers
                 return false;
             }
         }
-
         /// <summary>
         /// début d'une transaction
         /// appelé au début d'un série d'opération ou dans une opération
