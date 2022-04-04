@@ -7,7 +7,7 @@ using CommonLibrary.Tools;
 
 namespace CommonLibrary.Managers
 {
-    public class VirementsManager
+    public class VirementsTools
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -23,7 +23,7 @@ namespace CommonLibrary.Managers
             if (handler != null) handler(this, e);
         }
 
-        public VirementsManager(IVirementService virementSrv, IOperationService operationSrv)
+        public VirementsTools(IVirementService virementSrv, IOperationService operationSrv)
         {
             _virementSrv = virementSrv;
             _operationSrv = operationSrv;
@@ -389,6 +389,7 @@ namespace CommonLibrary.Managers
                     bool isModified = false;
                     if (virement.Duree != 0)
                     {
+                        _operationSrv.BeginTransaction();
                         SendLogMessage("Traitement virement " + virement.Description);
                         //Récupération de la date du dernier virement
                         //si aucun virement n'a jamais été effectué -> premier du mois
@@ -467,6 +468,7 @@ namespace CommonLibrary.Managers
                             _virementSrv.UpdateItem(virement);
                             hasModified = true;
                         }
+                        _operationSrv.EndTransaction();
                     }
                 }
 

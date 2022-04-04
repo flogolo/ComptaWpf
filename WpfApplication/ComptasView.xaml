@@ -22,7 +22,6 @@
         
         <controls:MyTreeView  HorizontalAlignment="Left" 
                               Grid.Column="0"
-                           Margin="0,0" 
                            VerticalAlignment="Top" 
                    SelectedModel="{Binding Item, Mode=TwoWay}"
                            ItemsSource="{Binding Comptas}">
@@ -126,6 +125,7 @@
             </StackPanel>
         </Border>
         <GroupBox Header="Nouveautés et Correctifs" Grid.Column="2" 
+                  HorizontalAlignment="Stretch"
                   Foreground="{StaticResource MenuBackground}" 
                   FontWeight="Bold">
                 <ListBox ItemsSource="{Binding VersionsList}">

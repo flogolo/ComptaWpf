@@ -13,7 +13,7 @@ namespace TestCompta
     [TestFixture]
     public class TestVirements
     {
-        private VirementsManager _Manager;
+        private VirementsTools _Manager;
         private IVirementService _VirementMock;
         private IOperationService _OperationMock;
 
@@ -28,7 +28,7 @@ namespace TestCompta
             _VirementMock = WpfIocFactoryMock.Instance.Container.Resolve<IVirementService>();
             _OperationMock = WpfIocFactoryMock.Instance.Container.Resolve<IOperationService>();
 
-            _Manager = new VirementsManager(_VirementMock, _OperationMock);
+            _Manager = new VirementsTools(_VirementMock, _OperationMock);
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace TestCompta
             var virementMock = WpfIocFactoryMock.Instance.Container.Resolve<IVirementService>();
             var operationMock = WpfIocFactoryMock.Instance.Container.Resolve<IOperationService>();
 
-            var manager = new VirementsManager(virementMock, operationMock);
+            var manager = new VirementsTools(virementMock, operationMock);
             //mois de février, mardi
             var dates = manager.GetAllMonths(new DateTime(2017, 2, 2), -1, new DateTime(2017, 2, 28), (int)DayOfWeek.Tuesday, FrequenceEnum.Hebdomadaire);
             Assert.AreEqual(1, dates.Count);

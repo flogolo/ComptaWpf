@@ -77,14 +77,6 @@ namespace DataAccessMock
             return ItemsList;
         }
 
-        public void UpdateItems(IEnumerable<OperationModel> list)
-        {
-            foreach (var operationModel in list)
-            {
-                UpdateItem(operationModel);
-            }
-        }
-
         public void CreateOperationWithDetails(OperationModel model)
         {
             CreateItem(model);

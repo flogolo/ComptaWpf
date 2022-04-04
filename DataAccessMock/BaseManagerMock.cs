@@ -97,6 +97,24 @@ namespace DataAccessMock
             System.Diagnostics.Debug.WriteLine("{0} : {1}", DateTime.Now, message);
         }
 
+        public bool TestConnexion()
+        {
+            return true;
+        }
 
+        public void BeginTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CommitTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EndTransaction()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -5,6 +5,7 @@ using CommonLibrary.Models;
 using CommonLibrary.Services.Interfaces;
 using CommonLibrary.Tools;
 using System.Linq;
+using NHibernate;
 
 namespace DataAccess.Managers
 {
@@ -14,6 +15,8 @@ namespace DataAccess.Managers
 
         public event EventHandler<ErrorEventArgs> ErrorOccured;
         public event EventHandler<EventArgs<String>> LogRequested;
+
+        protected ISession Session { get { return HibernateTools.Instance.Session; } }
 
         public string ModelName
         {
@@ -51,13 +54,11 @@ namespace DataAccess.Managers
                 var dateBefore = DateTime.Now;
                 Debug("Loading " + ModelName + "...");
                 ItemsList.Clear();
-                //ISession session = HibernateTools
-                var session = HibernateTools.Instance.Session;
+                //BeginTransaction();
 
-                var tx = session.BeginTransaction();
+                var models = Session.CreateQuery("from " + ModelName).List<T>();
 
-                var models = session.CreateQuery("from " + ModelName).List<T>();
-                tx.Commit();
+                //CommitTransaction();
 
                 foreach (var model in models)
                 {
@@ -86,16 +87,14 @@ namespace DataAccess.Managers
 
             Debug(String.Format("Deleting {0} {1} ...", ModelName, itemId));
 
-            var session = HibernateTools.Instance.Session;
-
-            var tx = session.BeginTransaction();
-            var model = session.Get<T>(itemId);
+            BeginTransaction();
+            var model = Session.Get<T>(itemId);
             if (model != null)
-            { 
-                session.Delete(model);
+            {
+                Session.Delete(model);
                 ItemsList.Remove(model);
             }
-            tx.Commit();
+            CommitTransaction();
         }
 
         /// <summary>
@@ -106,14 +105,12 @@ namespace DataAccess.Managers
         {
             Debug(String.Format("Creating {0} {1} ...", ModelName, model.Id));
 
-            var session = HibernateTools.Instance.Session;
-
-            var tx = session.BeginTransaction();
+            BeginTransaction();
 
             model.CreatedAt = DateTime.Now;
             model.UpdatedAt = DateTime.Now;
-            var saved = session.Save(model);
-            tx.Commit();
+            var saved = Session.Save(model);
+            CommitTransaction();
             model.Id = (long)saved;
             ItemsList.Add(model);
         }
@@ -126,21 +123,19 @@ namespace DataAccess.Managers
         {
             Debug(String.Format("Updating {0} {1} ...", ModelName, model.Id));
 
-            var session = HibernateTools.Instance.Session;
-
             var item = ItemsList.FirstOrDefault(i=>i.Id == model.Id);
             CopyTo(item, model);
 
-            var tx = session.BeginTransaction();
-            var data = session.Get<T>(model.Id);
+            BeginTransaction();
+            var data = Session.Get<T>(model.Id);
             if (data != null)
             {
                 CopyTo(data, model);
                 data.UpdatedAt = DateTime.Now;
-                session.Update(data);
+                Session.Update(data);
             }
 
-            tx.Commit();
+            CommitTransaction();
         }
 
         public virtual void CreateItems(IEnumerable<T> list)
@@ -167,6 +162,31 @@ namespace DataAccess.Managers
                 RaiseErrorOccured("Impossible de se connecter à la base de données " + e.Message);
                 return false;
             }
+        }
+        /// <summary>
+        /// début d'une transaction
+        /// appelé au début d'un série d'opération ou dans une opération
+        /// </summary>
+        public void BeginTransaction()
+        {
+            HibernateTools.Instance.BeginTransaction();
+        }
+
+        /// <summary>
+        /// commit de la transaction
+        /// si suite d'opération -> pas de commit
+        /// </summary>
+        public void CommitTransaction()
+        {
+            HibernateTools.Instance.CommitTransaction();
+        }
+
+        /// <summary>
+        /// appelé en fin de suite d'opération
+        /// </summary>
+        public void EndTransaction()
+        {
+            HibernateTools.Instance.EndTransaction();
         }
     }
 }

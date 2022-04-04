@@ -37,7 +37,7 @@ namespace MaCompta.ViewModels
         {
             _operationSrv = opSrv;
             _virementSrv = virementSrv;
-            _virementSrv.LogRequested += (s,e) => Container.Resolve<MainViewModel>().DisplayMessage(e.Data);
+            _virementSrv.LogRequested += (s,e) => LogMessageRequested(s, e);
             Virements = new List<VirementViewModel>();
             FilteredVirements = new ObservableCollection<VirementViewModel>();
             CollectionView = CollectionViewSource.GetDefaultView(FilteredVirements);
@@ -302,9 +302,9 @@ namespace MaCompta.ViewModels
         /// </summary>
         public void EffectuerVirements()
         {
-            var manager = new VirementsManager(_virementSrv, _operationSrv);
+            var manager = new VirementsTools(_virementSrv, _operationSrv);
             //ou comptesvm s'abonne à un changement de collection des opérations
-            manager.LogMessageRequested += ManagerLogMessageRequested;
+            manager.LogMessageRequested += LogMessageRequested;
             manager.VirementsAdded += ManagerVirementsAdded;
             var fetcher = new OneArgDelegate(
                 manager.EffectuerVirementsNew);
@@ -330,14 +330,9 @@ namespace MaCompta.ViewModels
             });
         }
 
-        //private delegate void StringArgDelegate(String arg);
-
-        void ManagerLogMessageRequested(object sender, EventArgs<string> e)
+        void LogMessageRequested(object sender, EventArgs<string> e)
         {
-            //Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-              //  new StringArgDelegate(LogMessage),
-                //e.Data);
-            DispatcherHelper.CheckBeginInvokeOnUI(()=>LogMessage(e.Data));
+            LogMessage(e.Data);
         }
 
         #endregion

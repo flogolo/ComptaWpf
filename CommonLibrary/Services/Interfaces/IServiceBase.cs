@@ -10,7 +10,7 @@ namespace CommonLibrary.Services.Interfaces
     public class HandledEventArgs<T> : EventArgs
     {
         /// <summary>
-        /// Donnée de l'événement.
+        /// DonnÃ©e de l'Ã©vÃ©nement.
         /// </summary>
         public T Data { get; set; }
     }
@@ -22,11 +22,11 @@ namespace CommonLibrary.Services.Interfaces
             get;
         }
         /// <summary>
-        /// liste des objets métier
+        /// liste des objets mÃ©tier
         /// </summary>
         Collection<T> ItemsList { get; }
         /// <summary>
-        /// Chargement de la liste des objets métiers
+        /// Chargement de la liste des objets mÃ©tiers
         /// </summary>
         void LoadItems();
 
@@ -34,20 +34,20 @@ namespace CommonLibrary.Services.Interfaces
         /// suppresion d'un item
         /// </summary>
         /// <param name="itemId">identifiant</param>
-        /// <param name="cascade">faut-il supprimer les éléments dépendants</param>
+        /// <param name="cascade">faut-il supprimer les Ã©lÃ©ments dÃ©pendants</param>
         void DeleteItem(long itemId, bool cascade);
 
         /// <summary>
-        /// Création d'un item.
+        /// CrÃ©ation d'un item.
         /// </summary>
-        /// <param name="model">model à créer</param>
-        /// <returns>retourne l'identifiant de l'item créé</returns>
+        /// <param name="model">model Ã  crÃ©er</param>
+        /// <returns>retourne l'identifiant de l'item crÃ©Ã©</returns>
         void CreateItem(T model);
 
         void UpdateItem(T model);
 
         /// <summary>
-        /// Création d'une liste d'items
+        /// CrÃ©ation d'une liste d'items
         /// </summary>
         /// <param name="list"></param>
         void CreateItems(IEnumerable<T> list);
@@ -56,5 +56,9 @@ namespace CommonLibrary.Services.Interfaces
         event EventHandler<EventArgs<String>> LogRequested;
 
         bool TestConnexion();
+
+        void BeginTransaction();
+        void CommitTransaction();
+        void EndTransaction();
     }
 }
