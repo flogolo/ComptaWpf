@@ -33,6 +33,10 @@ namespace MaCompta.ViewModels
         /// </summary>
         public static void FillVersions(List<VersionModifications> versions)
         {
+            var v10 = new VersionModifications("1.0.0.10");
+            v10.Modifications.Add("Correction dispatcher");
+            versions.Add(v10);
+
             var v9 = new VersionModifications("1.0.0.9");
             v9.Modifications.Add("Utilisation de transactions pour mettre à jour les données en base");
             versions.Add(v9);
