@@ -7,7 +7,6 @@ using CommonLibrary.IOC;
 using CommonLibrary.Models;
 using CommonLibrary.Services.Interfaces;
 using CommonLibrary.Tools;
-using System.Threading;
 using System.Collections.Specialized;
 using System.Windows.Input;
 using MaCompta.Commands;
@@ -345,6 +344,7 @@ namespace MaCompta.ViewModels
             MessageBoxShow(null, e.ErrorMessage, "Erreur d'accès au service");
             //DisplayMessage(e.ErrorMessage);
         }
+
         /// <summary>
         /// Affichage d'un message de log dans la vue principale
         /// 
@@ -352,8 +352,9 @@ namespace MaCompta.ViewModels
         /// <param name="message"></param>
         public void DisplayMessage(string message)
         {
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                new ThreadStart(() =>
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                new Action(() =>
             {
                 MessageService = message;
             }));
