@@ -5,21 +5,24 @@
         SizeToContent="WidthAndHeight"
         Title="Operations Filtrées">
     <Grid>
-        <StackPanel>
-        <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Operations}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="20" Grid.Row="0">
+			<Label Content="Total : "/>
+			<Label Content="{Binding MontantTotal,Converter={StaticResource MyCurrencyConverter}}"/>
+		</StackPanel>
+		<DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Operations}"
+                  Grid.Row="1"
                   AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Date opération" CellTemplate="{StaticResource DateOperationTemplate}"/>
-                <DataGridTemplateColumn Header="Date validation partielle" CellTemplate="{StaticResource DateValidationPartielleTemplate}"/>
-                <DataGridTemplateColumn Header="Date validation" CellTemplate="{StaticResource DateValidationTemplate}"/>
-                <DataGridTextColumn Header="Ordre" Binding="{Binding Ordre}"/>
-                <DataGridTemplateColumn Header="Montant" CellTemplate="{StaticResource MontantTemplate}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-            <StackPanel Orientation="Horizontal" Margin="20">
-            <Label Content="Total : "/>
-                <Label Content="{Binding MontantTotal,Converter={StaticResource MyCurrencyConverter}}"/>
-            </StackPanel>
-        </StackPanel>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Date opération" CellTemplate="{StaticResource DateOperationTemplate}"/>
+                    <DataGridTemplateColumn Header="Date validation partielle" CellTemplate="{StaticResource DateValidationPartielleTemplate}"/>
+                    <DataGridTemplateColumn Header="Date validation" CellTemplate="{StaticResource DateValidationTemplate}"/>
+                    <DataGridTextColumn Header="Ordre" Binding="{Binding Ordre}"/>
+                    <DataGridTemplateColumn Header="Montant" CellTemplate="{StaticResource MontantTemplate}"/>
+                </DataGrid.Columns>
+            </DataGrid>
     </Grid>
 </Window>
