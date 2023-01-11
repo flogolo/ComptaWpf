@@ -116,6 +116,11 @@ namespace MaCompta.ViewModels
         public long CompteId { get; set; }
 
         /// <summary>
+        /// Identitifant de l'opération liée
+        /// </summary>
+        public long? LienId { get; set; }
+
+        /// <summary>
         /// Montant de l'opération
         /// </summary>
         public decimal Montant
@@ -373,6 +378,7 @@ namespace MaCompta.ViewModels
             var vm = Container.Resolve<DetailViewModel>();
             vm.IsNew = true;
             vm.OperationId = Id;
+            vm.OperationLienId = LienId;
 
             //IsExpanded = true;
             InitEvent(vm);
@@ -411,6 +417,7 @@ namespace MaCompta.ViewModels
 
             CompteId = model.CompteId;
             Id = model.Id;
+            LienId = model.LienOperationId;
             IsReport = model.Report;
             IsVirementAuto = model.IsVirementAuto;
             RaisePropertyChanged(vm => vm.IsVirementAuto);
@@ -437,6 +444,7 @@ namespace MaCompta.ViewModels
                 foreach (var detail in model.Details)
                 {
                     var detailVm = Container.Resolve<DetailViewModel>().InitFromModel(detail);
+                    detailVm.OperationLienId = model.LienOperationId;
                     InitEvent(detailVm);
                     DetailsList.Add(detailVm);
                 }
@@ -448,44 +456,23 @@ namespace MaCompta.ViewModels
         public override void SaveToModel()
         {
             
-            //var operation = new OperationModel
-            {
-                Model.Id = Id;
-                Model.DateOperation = DateOperation;
-                Model.DateValidation = DateValidation;
-                Model.DateValidationPartielle = DateValidationPartielle;
-                Model.CompteId = CompteId;
-                Model.Ordre = Ordre;
-                Model.TypePaiement = PaiementHelper.GetCodePaiement(SelectedPaiement);
-                //Details = new List<DetailModel>(),
-                Model.NumeroCheque = NumeroCheque;
-                Model.Report = IsReport;
-            }
+            Model.Id = Id;
+            Model.LienOperationId = LienId;
+            Model.DateOperation = DateOperation;
+            Model.DateValidation = DateValidation;
+            Model.DateValidationPartielle = DateValidationPartielle;
+            Model.CompteId = CompteId;
+            Model.Ordre = Ordre;
+            Model.TypePaiement = PaiementHelper.GetCodePaiement(SelectedPaiement);
+            //Details = new List<DetailModel>(),
+            Model.NumeroCheque = NumeroCheque;
+            Model.Report = IsReport;
+
             foreach (var detail in DetailsList)
             {
                 detail.SaveToModel();
-                //var newDetail = new DetailModel
-                //                    {
-                //                        Id = detail.Id,
-                //                        Commentaire = detail.Commentaire,
-                //                        Montant = detail.Montant,
-                //                    };
-                //if (detail.SelectedRubrique != null)
-                //    newDetail.RubriqueId = detail.SelectedRubrique.Id;
-                //if (detail.SelectedSousRubrique != null)
-                //    newDetail.SousRubriqueId = detail.SelectedSousRubrique.Id;
-                //operation.Details.Add(newDetail);
             }
-            //if (IsCheque)
-            //{
-            //    operation.Cheque = new ChequeModel
-            //    {
-            //        Id = ChequeVm.Id,
-            //        Numero = ChequeVm.Numero,
-            //        OperationId = ChequeVm.OperationId
-            //    };
-            //}
-            //return operation;
+
         }
 
         public override OperationViewModel DuplicateViewModel()
@@ -521,7 +508,7 @@ namespace MaCompta.ViewModels
 
         private void OnDetailSaved(object sender, EventArgs<DetailModel> e)
         {
-            //sie le détail n'existe pas -> l'ajouter au modèle
+            //si le détail n'existe pas -> l'ajouter au modèle
             if (Model.Details.FirstOrDefault(d=>d.Id == e.Data.Id) == null)
                 Model.Details.Add(e.Data);
             RaisePropertyChanged(op => op.Poste);

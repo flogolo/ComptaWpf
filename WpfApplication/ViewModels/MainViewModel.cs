@@ -102,6 +102,28 @@ namespace MaCompta.ViewModels
             OpenedComptes.Add(cvm);
         }
 
+        internal void ReloadCompteForOperation(long operationId)
+        {
+            bool isCompteFound = false;
+            foreach (var compteVm in OpenedComptes)
+            {
+                foreach(var opVm in compteVm.OperationsList)
+                {
+                    if(opVm.Id == operationId)
+                    {
+                        //recharger
+                        opVm.InitFromModel(opVm.Model);
+                        isCompteFound = true;
+                        break;
+                    }
+                }
+                if (isCompteFound)
+                {
+                    break;
+                }
+            }
+            
+        }
 
         internal void ReloadComptes()
         {

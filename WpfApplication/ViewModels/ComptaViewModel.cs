@@ -71,12 +71,12 @@ namespace MaCompta.ViewModels
 
         public override void SaveToModel()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("ComptaVieModel => SaveToModel");
         }
 
         public override ComptaViewModel DuplicateViewModel()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("ComptaVieModel => DuplicateViewModel");
         }
 
          /// <summary>

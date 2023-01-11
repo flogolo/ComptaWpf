@@ -58,7 +58,7 @@ namespace MaCompta.ViewModels
 
         public override SousRubriqueViewModel DuplicateViewModel()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("SousRrubriqueVieModel => DuplicateViewModel");
         }
 
         public int CompareTo(SousRubriqueViewModel other)

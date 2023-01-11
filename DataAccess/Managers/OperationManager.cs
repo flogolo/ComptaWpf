@@ -63,7 +63,7 @@ namespace DataAccess.Managers
                 }
                 AllOrdres.Sort();
 
-                Debug(String.Format("{0} loaded ({1} items)", ModelName, operations.Count));
+                Debug(String.Format("{0} loaded ({1} items)", ModelName, operations.Count()));
 
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace DataAccess.Managers
             return ItemsList;
         }
 
-        public override void UpdateItem(OperationModel model)
+        public override void UpdateItem(OperationModel model, bool traiterLien)
         {
             Debug(String.Format("Updating {0} {1} ...", ModelName, model.Id));
 
@@ -114,11 +114,20 @@ namespace DataAccess.Managers
         public void CreateOperationWithDetails(OperationModel model)
         {
             CreateItem(model);
-            //op.Details = new List<DetailModel>();
             foreach (var detail in model.Details)
             {
                 detail.OperationId = model.Id; 
                 _DetailSrv.CreateItem(detail);
+            }
+        }
+
+        public void UpdateOperationWithDetails(OperationModel model)
+        {
+            UpdateItem(model, false);
+            foreach (var detail in model.Details)
+            {
+                detail.OperationId = model.Id;
+                _DetailSrv.UpdateItem(detail, false);
             }
         }
 
@@ -190,5 +199,6 @@ namespace DataAccess.Managers
             if (!AllOrdres.Contains(model.Ordre))
                 AllOrdres.Add(model.Ordre);
         }
+
     }
 }
