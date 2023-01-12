@@ -194,7 +194,7 @@ namespace MaCompta.ViewModels
                 Model.LienDetailId = linkedDetail.Id;
             }
             ModelServiceBase.EndTransaction();
-
+            WpfIocFactory.Instance.MainVm.ReloadCompteForOperation(OperationLienId);
         }
     }
 }

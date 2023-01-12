@@ -432,12 +432,6 @@ namespace MaCompta.ViewModels
             SelectedPaiement = PaiementHelper.GetPaiement(model.TypePaiement);
             NumeroCheque = model.NumeroCheque;
 
-            //if (IsCheque && model.Cheque != null)
-            //{
-            //    ChequeVm.InitFromModel(model.Cheque);
-            //    RaisePropertyChanged(vm => vm.NumeroCheque);
-            //}
-
             if (model.Details != null)
             {
                 DetailsList.Clear();
@@ -514,6 +508,14 @@ namespace MaCompta.ViewModels
             RaisePropertyChanged(op => op.Poste);
             RaisePropertyChanged(op => op.Montant);
             RaiseMontantUpdated();
+        }
+
+        public void updateOperationProperties()
+        {
+            RaisePropertyChanged(op => op.Poste);
+            RaisePropertyChanged(op => op.Montant);
+            RaiseMontantUpdated();
+
         }
 
         private void InitEvent(DetailViewModel vm)

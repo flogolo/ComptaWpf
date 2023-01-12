@@ -102,8 +102,12 @@ namespace MaCompta.ViewModels
             OpenedComptes.Add(cvm);
         }
 
-        internal void ReloadCompteForOperation(long operationId)
+        internal void ReloadCompteForOperation(long? operationId)
         {
+            if(operationId == null)
+            {
+                return;
+            }
             bool isCompteFound = false;
             foreach (var compteVm in OpenedComptes)
             {
@@ -113,6 +117,8 @@ namespace MaCompta.ViewModels
                     {
                         //recharger
                         opVm.InitFromModel(opVm.Model);
+                        opVm.IsModified = false;
+                        opVm.updateOperationProperties();
                         isCompteFound = true;
                         break;
                     }
@@ -205,13 +211,14 @@ namespace MaCompta.ViewModels
         /// Message pour la barre d'état
         /// </summary>
         private string _messageService;
-        public String MessageService
+        public string MessageService
         {
             get { return _messageService; }
             set
             {
                 _messageService = value;
-                Messages.Insert(0, value);
+                //Messages.Insert(0, value);
+                Messages.Add(value);
                 RaisePropertyChanged(vm => vm.MessageService);
             }
         }
