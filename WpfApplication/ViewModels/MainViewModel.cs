@@ -219,8 +219,8 @@ namespace MaCompta.ViewModels
             set
             {
                 _messageService = value;
-                //Messages.Insert(0, value);
-                Messages.Add(value);
+                Messages.Insert(0, value);
+                //Messages.Add(value);
                 RaisePropertyChanged(vm => vm.MessageService);
             }
         }
@@ -384,7 +384,7 @@ namespace MaCompta.ViewModels
         public void DisplayMessage(string message)
         {
 
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
                 new Action(() =>
             {
                 MessageService = message;
