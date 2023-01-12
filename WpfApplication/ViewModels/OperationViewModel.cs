@@ -403,9 +403,7 @@ namespace MaCompta.ViewModels
                 {
                     Model.Details.Remove(e.Data);
                 }
-                RaisePropertyChanged(op => op.Montant);
-                RaiseMontantUpdated();
-                RaisePropertyChanged(v => v.Poste);
+                updateOperationProperties();
             }
         }
 
@@ -505,11 +503,12 @@ namespace MaCompta.ViewModels
             //si le détail n'existe pas -> l'ajouter au modèle
             if (Model.Details.FirstOrDefault(d=>d.Id == e.Data.Id) == null)
                 Model.Details.Add(e.Data);
-            RaisePropertyChanged(op => op.Poste);
-            RaisePropertyChanged(op => op.Montant);
-            RaiseMontantUpdated();
+            updateOperationProperties();
         }
 
+        /// <summary>
+        /// Mise à jour des prorpiétés d'IHM liées à l'opération
+        /// </summary>
         public void updateOperationProperties()
         {
             RaisePropertyChanged(op => op.Poste);
@@ -556,9 +555,7 @@ namespace MaCompta.ViewModels
                 DetailsList.Add(detailVm);
                 IsModified = true;
             }
-            RaisePropertyChanged(op => op.Montant);
-            RaiseMontantUpdated();
-            RaisePropertyChanged(v => v.Poste);
+            updateOperationProperties();
         }
 
         public void Valider()
@@ -788,9 +785,7 @@ namespace MaCompta.ViewModels
                 //var modelDetail = detailVm.SaveToModel();
                 Model.Details.Add(detailVm.Model);
                 IsModified = true;
-                RaisePropertyChanged(op => op.Montant);
-                RaiseMontantUpdated();
-                RaisePropertyChanged(v => v.Poste);
+                updateOperationProperties();    
             }
             base.ActionColler();
         }

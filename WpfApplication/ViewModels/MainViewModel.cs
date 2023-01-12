@@ -108,6 +108,7 @@ namespace MaCompta.ViewModels
             {
                 return;
             }
+            //recherche de l'opération liée à mettre à jour si elle a été chargée
             bool isCompteFound = false;
             foreach (var compteVm in OpenedComptes)
             {
@@ -123,6 +124,7 @@ namespace MaCompta.ViewModels
                         break;
                     }
                 }
+                //dès que l'opération a été trouvée -> fin
                 if (isCompteFound)
                 {
                     break;

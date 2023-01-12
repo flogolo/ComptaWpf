@@ -183,6 +183,8 @@ namespace MaCompta.ViewModels
             ModelServiceBase.BeginTransaction();
             bool wasNew = IsNew;
             base.ActionSauvegarder();
+            //si c'est une opération liée et que le détail vient d'être créé -> ajouter le détail lié sur l'opération liée
+            //la modification est traitée dans DetailManager
             if (wasNew && OperationLienId != null)
             {
                 //créer le détail dans l'opération liée
