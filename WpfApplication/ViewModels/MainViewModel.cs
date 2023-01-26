@@ -102,6 +102,36 @@ namespace MaCompta.ViewModels
             OpenedComptes.Add(cvm);
         }
 
+        internal void ReloadCompteForOperation(long? operationId)
+        {
+            if(operationId == null)
+            {
+                return;
+            }
+            //recherche de l'opération liée à mettre à jour si elle a été chargée
+            bool isCompteFound = false;
+            foreach (var compteVm in OpenedComptes)
+            {
+                foreach(var opVm in compteVm.OperationsList)
+                {
+                    if(opVm.Id == operationId)
+                    {
+                        //recharger
+                        opVm.InitFromModel(opVm.Model);
+                        opVm.IsModified = false;
+                        opVm.updateOperationProperties();
+                        isCompteFound = true;
+                        break;
+                    }
+                }
+                //dès que l'opération a été trouvée -> fin
+                if (isCompteFound)
+                {
+                    break;
+                }
+            }
+            
+        }
 
         internal void ReloadComptes()
         {
@@ -183,13 +213,14 @@ namespace MaCompta.ViewModels
         /// Message pour la barre d'état
         /// </summary>
         private string _messageService;
-        public String MessageService
+        public string MessageService
         {
             get { return _messageService; }
             set
             {
                 _messageService = value;
                 Messages.Insert(0, value);
+                //Messages.Add(value);
                 RaisePropertyChanged(vm => vm.MessageService);
             }
         }
@@ -353,7 +384,7 @@ namespace MaCompta.ViewModels
         public void DisplayMessage(string message)
         {
 
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
                 new Action(() =>
             {
                 MessageService = message;

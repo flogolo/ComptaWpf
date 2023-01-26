@@ -204,7 +204,7 @@ namespace MaCompta.ViewModels
             else
             {
                 SaveToModel();
-                ModelServiceBase.UpdateItem(Model);
+                ModelServiceBase.UpdateItem(Model, true);
                 LogMessage("Detail mis à jour");
                 IsModified = false;
             }

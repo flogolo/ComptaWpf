@@ -696,7 +696,7 @@ namespace MaCompta.ViewModels
 
         public override CompteViewModel DuplicateViewModel()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("CompteVieModel => DuplicateViewModel");
         }
 
         public void AddOperationViewModel(OperationViewModel vm)
@@ -778,7 +778,7 @@ namespace MaCompta.ViewModels
                     {
                         virement.CompteDstId = 0;
                     }
-                    _virementService.UpdateItem(virement);
+                    _virementService.UpdateItem(virement, true);
                 }
             }
             _compteSrv.DeleteItem(Model.Id, true);

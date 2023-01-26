@@ -381,16 +381,21 @@ namespace CommonLibrary.Managers
             {
                 var dateFinMois = GetCurrentFinMois(maintenant);
                 var hasModified = false;
+                string addSrcMessage;
+                string addDstMessage;
                 SendLogMessage("EffectuerVirements " + maintenant + " -> " + dateFinMois);
 
                 //Effectuer les virements configurés
                 foreach (var virement in _virementSrv.ItemsList)
                 {
                     bool isModified = false;
+                    addSrcMessage = "";
+                    addDstMessage = "";
                     if (virement.Duree != 0)
                     {
-                        _operationSrv.BeginTransaction();
                         SendLogMessage("Traitement virement " + virement.Description);
+
+                        _operationSrv.BeginTransaction();
                         //Récupération de la date du dernier virement
                         //si aucun virement n'a jamais été effectué -> premier du mois
                         DateTime dateDernierVirement = virement.DateDernierVirement == null
@@ -420,8 +425,12 @@ namespace CommonLibrary.Managers
                                                                  virement.Details, true, virement.Montant, virement.TypePaiement);
                                         if (opSrc != null)
                                         {
-                                            SendLogMessage("Ajout virements -> ajout d'une opération de débit " +
-                                                           opSrc.DateOperation);
+                                            if (addSrcMessage != null)
+                                            {
+                                                addSrcMessage += System.Environment.NewLine;
+                                            }
+                                            addSrcMessage += "Ajout virements -> ajout d'une opération de débit " +
+                                                           opSrc.DateOperation;
                                             _operationSrv.CreateOperationWithDetails(opSrc);
                                             isModified = true;
                                         }
@@ -434,8 +443,12 @@ namespace CommonLibrary.Managers
                                                                  virement.Details, false, virement.Montant, virement.TypePaiement);
                                         if (opDst != null)
                                         {
-                                            SendLogMessage("Ajout virements -> ajout d'une opération de crédit " +
-                                                         opDst.DateOperation);
+                                            if (addDstMessage != null)
+                                            {
+                                                addDstMessage += System.Environment.NewLine;
+                                            }
+                                            addDstMessage += "Ajout virements -> ajout d'une opération de crédit " +
+                                                         opDst.DateOperation;
                                             _operationSrv.CreateOperationWithDetails(opDst);
                                             isModified = true;
                                         }
@@ -449,8 +462,18 @@ namespace CommonLibrary.Managers
                                             //2 opérations créées -> on fait le lien entre elles
                                             opSrc.LienOperationId = opDst.Id;
                                             opDst.LienOperationId = opSrc.Id;
-                                            _operationSrv.UpdateItem(opSrc);
-                                            _operationSrv.UpdateItem(opDst);
+                                            foreach (var srcDetail in opSrc.Details)
+                                            {
+                                                var dstDetail = opDst.Details.FirstOrDefault(d => d.RubriqueId == srcDetail.RubriqueId
+                                                    && d.SousRubriqueId == srcDetail.SousRubriqueId);
+                                                if (dstDetail != null)
+                                                {
+                                                    dstDetail.LienDetailId = srcDetail.Id;
+                                                    srcDetail.LienDetailId = dstDetail.Id;
+                                                }
+                                            }
+                                            _operationSrv.UpdateOperationWithDetails(opSrc);
+                                            _operationSrv.UpdateOperationWithDetails(opDst);
                                         }
                                         virement.DateDernierVirement = dateVirement;
                                         //mettre à jour la duree si elle n'est pas indéfinie
@@ -462,18 +485,26 @@ namespace CommonLibrary.Managers
                                 }
                             }
                         }
+                        _operationSrv.EndTransaction();
                         //sauvegarde du virement (duree et date dernier ont été modifiés)
                         if (isModified)
                         {
-                            _virementSrv.UpdateItem(virement);
+                            _virementSrv.UpdateItem(virement, false);
                             hasModified = true;
                         }
-                        _operationSrv.EndTransaction();
+                        if(!string.IsNullOrEmpty(addSrcMessage))
+                        {
+                            SendLogMessage(addSrcMessage);
+                        }
+                        if(!string.IsNullOrEmpty(addDstMessage))
+                        {
+                            SendLogMessage(addDstMessage);
+                        }
                     }
                 }
 
                 SupprimerReport(maintenant, dateFinMois);
-                //finde traitement
+                //fin de traitement
                 if (!hasModified)
                 {
                     SendLogMessage("Aucun virement à effectuer");
@@ -503,7 +534,7 @@ namespace CommonLibrary.Managers
             && o.DateOperation < finDeMois && o.Report))
             {
                 op.Report = false;
-                _operationSrv.UpdateItem(op);
+                _operationSrv.UpdateItem(op, false);
             }
             SendLogMessage("Suppression report ok");
         }

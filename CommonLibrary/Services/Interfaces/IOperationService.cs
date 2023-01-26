@@ -13,19 +13,14 @@ namespace CommonLibrary.Services.Interfaces
         /// <param name="compteId"></param>
         ICollection<OperationModel> LoadOperationsEnCours(long compteId);
 
-        ///// <summary>
-        ///// Suppression d'une opération
-        ///// </summary>
-        ///// <param name="operationId">identifiant de l'opération</param>
-        //void DeleteOperation(int operationId);
-
         void CreateOperationWithDetails(OperationModel model);
+        void UpdateOperationWithDetails(OperationModel model);
 
         string FindCheque(string value);
 
         List<OperationModel> AllOperations { get; }
 
-        SortableObservableCollection<String> AllOrdres { get; }
+        SortableObservableCollection<string> AllOrdres { get; }
     }
 
     public interface IOperationPredefinieService : IServiceBase<OperationPredefinieModel>

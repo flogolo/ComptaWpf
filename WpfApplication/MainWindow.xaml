@@ -4,7 +4,6 @@
         xmlns:maCompta="clr-namespace:MaCompta"
           xmlns:viewmodels="clr-namespace:MaCompta.ViewModels"
         Title="Compta" MinHeight="600" MinWidth="900" 
-        xmlns:controls="clr-namespace:MaCompta.Controls"
         SizeChanged="UserControlSizeChanged" >
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -49,8 +48,8 @@
                 <maCompta:ComparatifView/>
             </TabItem>
     </TabControl>
-        <ListBox Grid.Row="2" ItemsSource="{Binding Messages}" VerticalAlignment="Top" Height="100"/>
-        <!--<Label Content="{Binding Path=MessageService}" Grid.Row="3"/>-->
-
+        <ListBox Grid.Row="2" ItemsSource="{Binding Messages}" 
+                 VerticalAlignment="Top" Height="100"
+                 x:Name="messagesLB"/>
     </Grid>
 </Window>

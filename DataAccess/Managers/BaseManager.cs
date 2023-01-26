@@ -119,7 +119,7 @@ namespace DataAccess.Managers
         /// Mise à jour d'un item
         /// </summary>
         /// <param name="model"></param>
-        public virtual void UpdateItem(T model)
+        public virtual void UpdateItem(T model, bool traiterLien)
         {
             Debug(String.Format("Updating {0} {1} ...", ModelName, model.Id));
 
@@ -140,7 +140,7 @@ namespace DataAccess.Managers
 
         public virtual void CreateItems(IEnumerable<T> list)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ModelName + " : CreateItems not implemented");
         }
 
         protected void Debug(String message)

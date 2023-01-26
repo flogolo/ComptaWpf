@@ -61,7 +61,7 @@ namespace MaCompta.ViewModels
         /// <returns></returns>
         public override BanqueViewModel DuplicateViewModel()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("BanqueVieModel => DuplicateViewModel");
         }
 
         public override void UpdateProperties()

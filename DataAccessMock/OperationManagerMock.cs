@@ -149,7 +149,9 @@ namespace DataAccessMock
                 AllOrdres.Add(model.Ordre);
         }
 
-
-
+        public void UpdateOperationWithDetails(OperationModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -222,14 +222,12 @@ namespace MaCompta.ViewModels
         [BaseCommand("ActionSauvegarderCommand")]
         public virtual void ActionSauvegarder()
         {
-            //sauvegarde de la rubrique
             //WpfIocFactory.Instance.LogMessage(String.Format("{0} en cours de sauvegarde...", ModelName ));
             if (IsNew)
             {
                 SaveToModel();
                 ModelServiceBase.CreateItem(Model);
                 Id = Model.Id;
-                //Model = saved;
                 IsNew = false;
                 IsModified = false;
                 UpdateProperties();
@@ -238,7 +236,7 @@ namespace MaCompta.ViewModels
             else if (IsModified)
             {
                 SaveToModel();
-                ModelServiceBase.UpdateItem(Model);
+                ModelServiceBase.UpdateItem(Model, true);
                 IsModified = false;
                 UpdateProperties();
                 LogMessage("{0} mis(e) à jour : {1}", ModelName, ToString());
@@ -283,7 +281,7 @@ namespace MaCompta.ViewModels
         {}
 
         /// <summary>
-        /// renvoie un objet model initialisé à partir du view model
+        /// sauvegarde des données saisie du ViewModel dans l'objet Model
         /// </summary>
         /// <returns></returns>
         public abstract void SaveToModel();

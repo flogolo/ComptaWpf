@@ -43,6 +43,16 @@ namespace MaCompta
                     LoadVirements();
                 }
                 AddHandler(CloseableTabItem.CloseTabEvent, new RoutedEventHandler(CloseTab));
+                _mainVm.PropertyChanged += _mainVm_PropertyChanged;
+            }
+        }
+
+        private void _mainVm_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine("_mainVm_PropertyChanged" + e.PropertyName);
+            if(e.PropertyName == "MessageService")
+            {
+                messagesLB.ScrollIntoView(messagesLB.Items[0]);
             }
         }
 
