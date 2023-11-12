@@ -33,6 +33,9 @@ namespace MaCompta.ViewModels
         /// </summary>
         public static void FillVersions(List<VersionModifications> versions)
         {
+            var v11 = new VersionModifications("1.0.0.11");
+            v11.Modifications.Add("Recherche sur commentaire");
+            versions.Add(v11);
             var v10 = new VersionModifications("1.0.0.10");
             v10.Modifications.Add("Correction dispatcher");
             versions.Add(v10);

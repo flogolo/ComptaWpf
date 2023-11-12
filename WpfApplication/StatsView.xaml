@@ -117,11 +117,16 @@
                 <ComboBox Width="200" ItemsSource="{Binding Rubriques}"
                            SelectedItem="{Binding SelectedRubrique, Mode=TwoWay}"/>
             </StackPanel>
-                <!-- Choix sous-rubrique-->
-                <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
+            <!-- Choix sous-rubrique-->
+            <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
                 <Label Content="Choix Sous-Rubrique :" Width="200"/>
                 <ComboBox Width="200" ItemsSource="{Binding SousRubriques}"
                         SelectedItem="{Binding SelectedSousRubrique, Mode=TwoWay}"/>
+            </StackPanel>
+            <!-- saisie détail -->
+            <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
+                <Label Content="Commentaire :" Width="200"/>
+                <TextBox Width="200" Text="{Binding Commentaire}"/>
             </StackPanel>
                 <!-- Actions -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
