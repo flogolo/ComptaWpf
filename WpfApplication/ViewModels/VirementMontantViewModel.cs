@@ -85,7 +85,7 @@ namespace MaCompta.ViewModels
 
         public override VirementMontantViewModel DuplicateViewModel()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("VirementMontantViewModel => DuplicateViewModel");
         }
         public override void UpdateProperties()
         {

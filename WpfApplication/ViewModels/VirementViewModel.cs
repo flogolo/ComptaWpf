@@ -607,7 +607,7 @@ namespace MaCompta.ViewModels
                         else
                         {
                             montant.SaveToModel();
-                            _montantSrv.UpdateItem(montant.Model);
+                            _montantSrv.UpdateItem(montant.Model, true);
                             LogMessage(String.Format("Montant sauvegardé {0}={1}", montant.DetailId, montant.Montant));
                         }
                         montant.IsModified = false;

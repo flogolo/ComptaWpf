@@ -187,7 +187,7 @@ namespace MaCompta.ViewModels
         /// <returns></returns>
         public override OperationPredefinieViewModel DuplicateViewModel()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("OperationPredefineVieModel => DuplicateViewModel");
         }
 
         public override string ToString()

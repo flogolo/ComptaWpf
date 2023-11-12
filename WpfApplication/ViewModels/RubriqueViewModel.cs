@@ -45,7 +45,7 @@ namespace MaCompta.ViewModels
 
         public override RubriqueViewModel DuplicateViewModel()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("RubriqueVieModel => DuplicateViewModel");
         }
 
         public override void ActionAjouter()

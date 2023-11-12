@@ -44,7 +44,9 @@ namespace CommonLibrary.Services.Interfaces
         /// <returns>retourne l'identifiant de l'item créé</returns>
         void CreateItem(T model);
 
-        void UpdateItem(T model);
+        void UpdateItem(T model, bool traiterLien);
+
+        void CopyTo(T modelDst, T modelSrc);
 
         /// <summary>
         /// Création d'une liste d'items

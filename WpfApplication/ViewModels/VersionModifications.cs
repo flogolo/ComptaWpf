@@ -36,6 +36,10 @@ namespace MaCompta.ViewModels
             var v12 = new VersionModifications("1.0.0.12");
             v12.Modifications.Add("Recherche sur commentaire");
             versions.Add(v12);
+          
+            var v11 = new VersionModifications("1.0.0.11");
+            v11.Modifications.Add("Synchronisation des opérations liées");
+            versions.Add(v11);
 
             var v10 = new VersionModifications("1.0.0.10");
             v10.Modifications.Add("Correction dispatcher");

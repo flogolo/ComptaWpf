@@ -155,7 +155,7 @@ namespace MaCompta.ViewModels
         [BaseCommand("ActionAjouterCommand")]
         public virtual void ActionAjouter()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("ViewModelBase => ActionAjouter");
         }
 
         #region IDisposable Support

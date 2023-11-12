@@ -86,6 +86,18 @@ namespace MaCompta.ViewModels
             get;set;
         }
 
+        /// <summary>
+        /// identifiant de l'opération liée
+        /// </summary>
+        public long? OperationLienId
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// identifiant du détail lié
+        /// </summary>
+        public long? DetailLienId { get; set; }
         #endregion
 
         /// <summary>
@@ -115,6 +127,7 @@ namespace MaCompta.ViewModels
             Commentaire = model.Commentaire;
             Montant= model.Montant;
             OperationId = model.OperationId;
+            DetailLienId = model.LienDetailId;
             InitRubrique(model.RubriqueId, model.SousRubriqueId);
             return this;
         }
@@ -123,15 +136,13 @@ namespace MaCompta.ViewModels
         {
             var rubriqueId = SelectedRubrique == null ? 0 : SelectedRubrique.Id;
             var sousrubriqueId = SelectedSousRubrique == null ? 0 : SelectedSousRubrique.Id;
-            //return new DetailModel
-                       {
-                Model.Commentaire = Commentaire;
-                Model.Id = Id;
-                Model.Montant = Montant;
-                Model.OperationId = OperationId;
-                Model.RubriqueId = rubriqueId;
-                Model.SousRubriqueId = sousrubriqueId;
-                       }
+            Model.Commentaire = Commentaire;
+            Model.Id = Id;
+            Model.Montant = Montant;
+            Model.OperationId = OperationId;
+            Model.RubriqueId = rubriqueId;
+            Model.SousRubriqueId = sousrubriqueId;
+            Model.LienDetailId = DetailLienId;
         }
 
         public override DetailViewModel DuplicateViewModel()
@@ -165,6 +176,27 @@ namespace MaCompta.ViewModels
         public override void UpdateProperties()
         {
             //nothing to do
+        }
+
+        public override void ActionSauvegarder()
+        {
+            ModelServiceBase.BeginTransaction();
+            bool wasNew = IsNew;
+            base.ActionSauvegarder();
+            //si c'est une opération liée et que le détail vient d'être créé -> ajouter le détail lié sur l'opération liée
+            //la modification est traitée dans DetailManager
+            if (wasNew && OperationLienId != null)
+            {
+                //créer le détail dans l'opération liée
+                var linkedDetail = new DetailModel();
+                ModelServiceBase.CopyTo(linkedDetail, Model);
+                linkedDetail.LienDetailId = Model.Id;
+                linkedDetail.OperationId = OperationLienId.Value;
+                ModelServiceBase.CreateItem(linkedDetail);
+                Model.LienDetailId = linkedDetail.Id;
+            }
+            ModelServiceBase.EndTransaction();
+            WpfIocFactory.Instance.MainVm.ReloadCompteForOperation(OperationLienId);
         }
     }
 }
