@@ -1,4 +1,4 @@
-﻿using GalaSoft.MvvmLight.Threading;
+﻿using MaCompta.Common;
 using System.Windows;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]

@@ -1,10 +1,9 @@
-﻿using GalaSoft.MvvmLight;
-using MaCompta.Commands;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MaCompta.ViewModels
 {
     //<CheckedListItem<T>>
-    public class CheckedListItem : ViewModelBase
+    public class CheckedListItem : ObservableObject
     {
         private bool _isChecked;
         private string _item;
@@ -30,7 +29,7 @@ namespace MaCompta.ViewModels
             set
             {
                 _item = value;
-                RaisePropertyChanged(() => Item);
+                OnPropertyChanged();
             }
         }
 
@@ -41,7 +40,7 @@ namespace MaCompta.ViewModels
             set
             {
                 _isChecked = value;
-                RaisePropertyChanged(() => IsChecked);
+                OnPropertyChanged();
                 filterViewModel.ApplyFilter(this);
             }
         }
@@ -49,7 +48,7 @@ namespace MaCompta.ViewModels
         public void ResetValue()
         {
             _isChecked = false;
-            RaisePropertyChanged(() => IsChecked);
+            OnPropertyChanged(nameof(IsChecked)) ;
         }
     }
 }

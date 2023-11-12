@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Threading;
 using MaCompta.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
 using MaCompta.Tools;
 using MaCompta.Dialogs;
 using System.Windows.Input;
@@ -11,6 +10,7 @@ using System;
 using MaCompta.Controls;
 using System.ComponentModel;
 using System.Linq;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace MaCompta
 {
@@ -92,7 +92,7 @@ namespace MaCompta
             ResizeTabItems();
 
             _mainVm.MessageBoxRequest += MainVmMessageBoxRequest;
-            Messenger.Default.Register<ShowDialogMessage>(this, HandleShowDialog);
+            WeakReferenceMessenger.Default.Register<ShowDialogMessage>(this, (r, m) => HandleShowDialog(m));
         }
 
         private void MainVm_CompteDeleted(object sender, EventArgs<CompteViewModel> e)

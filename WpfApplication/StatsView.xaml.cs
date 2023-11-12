@@ -31,17 +31,17 @@ namespace MaCompta
 
         private void StatViewModelStatsUpdated(object sender, EventArgs e)
         {
-            ChartColumn.Series.Clear();
-            foreach (var stat in _statViewModel.StatsMulti)
-            {
-                ChartColumn.Series.Add(new ColumnSeries
-                {
-                    Title = stat.Libelle,
-                    ItemsSource = stat.Stats,
-                    IndependentValueBinding = new System.Windows.Data.Binding("Mois"),
-                    DependentValueBinding = new System.Windows.Data.Binding("Montant"),
-                });
-            }
+            //ChartColumn.Series.Clear();
+            //foreach (var stat in _statViewModel.StatsMulti)
+            //{
+            //    ChartColumn.Series.Add(new ColumnSeries
+            //    {
+            //        Title = stat.Libelle,
+            //        ItemsSource = stat.Stats,
+            //        IndependentValueBinding = new System.Windows.Data.Binding("Mois"),
+            //        DependentValueBinding = new System.Windows.Data.Binding("Montant"),
+            //    });
+            //}
         }
 
         private void MoisPrecedentClick(object sender, RoutedEventArgs e)

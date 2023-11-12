@@ -11,8 +11,6 @@ using CommonLibrary.Tools;
 using MaCompta.Commands;
 using MaCompta.Common;
 using MaCompta.Controls;
-using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Asn1.Ess;
 
 namespace MaCompta.ViewModels
 {

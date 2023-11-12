@@ -10,10 +10,10 @@ using CommonLibrary.Models;
 using CommonLibrary.Services.Interfaces;
 using CommonLibrary.Tools;
 using MaCompta.Commands;
-using GalaSoft.MvvmLight.Messaging;
 using MaCompta.Tools;
 using System.Windows.Threading;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace MaCompta.ViewModels
 {
@@ -89,7 +89,7 @@ namespace MaCompta.ViewModels
             });
             CommandOperationChangeCompte = new RelayCommand(param =>
             {
-                Messenger.Default.Send(
+                WeakReferenceMessenger.Default.Send(
                 new ShowDialogMessage(ShowDialogMessageEnum.OperationChangeCompte)
                 { CompteVM = this, SelectedOperation = SelectedOperation });
             }, (p) => { return SelectedOperation != null; });
@@ -104,13 +104,13 @@ namespace MaCompta.ViewModels
             });
             CommandVoir30DernieresCartes = new RelayCommand(param =>
             {
-                Messenger.Default.Send(
+                WeakReferenceMessenger.Default.Send(
                 new ShowDialogMessage(ShowDialogMessageEnum.OperationsFiltrees)
                 { CompteVM = this });
             });
             CommandCreerModifierOperationPredefinie = new RelayCommand(param =>
             {
-                Messenger.Default.Send(
+                WeakReferenceMessenger.Default.Send(
                 new ShowDialogMessage(ShowDialogMessageEnum.OperationPredefinie)
                 { CompteVM = this });
             });
@@ -123,7 +123,7 @@ namespace MaCompta.ViewModels
                 }});
             CommandOperationFiltre = new RelayCommand(param =>
             {
-                Messenger.Default.Send(
+                WeakReferenceMessenger.Default.Send(
                 new ShowDialogMessage(ShowDialogMessageEnum.OperationFiltre)
                 { CompteVM = this });
             });
@@ -873,7 +873,7 @@ namespace MaCompta.ViewModels
         /// </summary>
         public void LoadCompteOperations()
         {
-            Messenger.Default.Send(
+            WeakReferenceMessenger.Default.Send(
                 new ShowDialogMessage(ShowDialogMessageEnum.MessageAttente));
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(delegate
             {
@@ -885,7 +885,7 @@ namespace MaCompta.ViewModels
                         "{0} Chargement des opérations terminé",
                         DateTime.Now);
                 LogMessage("Chargement des opérations terminé");
-                Messenger.Default.Send(
+                WeakReferenceMessenger.Default.Send(
                     new ShowDialogMessage(ShowDialogMessageEnum.FinAttente));
             }));
         }
