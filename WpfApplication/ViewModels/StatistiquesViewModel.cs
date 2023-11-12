@@ -11,6 +11,8 @@ using CommonLibrary.Tools;
 using MaCompta.Commands;
 using MaCompta.Common;
 using MaCompta.Controls;
+using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Asn1.Ess;
 
 namespace MaCompta.ViewModels
 {
@@ -32,6 +34,7 @@ namespace MaCompta.ViewModels
         //private ICommand m_CalculCommand;
         private readonly IOperationService _operationService;
         private SousRubriqueViewModel _selectedSousRubriqueDetail;
+        private string _commentaire;
         #endregion
 
         #region Constructeur
@@ -168,19 +171,29 @@ namespace MaCompta.ViewModels
             {
                 foreach (var detail in operation.Details)
                 {
+                    if (!FiltrerCommentaire(detail))
+                    {
+                        continue;
+                    }
                     //Affichage des stats sur toutes les rubriques
-                    var rubrique = WpfIocFactory.Instance.RubriquesVm.GetRubrique(detail.RubriqueId);
-                    var statdetail = result.FirstOrDefault(d => d.Id == rubrique.Id);
+                    //mise à jour du credit/debit
                     if (detail.Montant > 0)
                         credit += detail.Montant;
                     else
                         debit += detail.Montant;
 
+                    //recherche de la rubrique
+                    var rubrique = WpfIocFactory.Instance.RubriquesVm.GetRubrique(detail.RubriqueId);
+                    //recherche de la sous-rubrique
                     var sousrubrique = WpfIocFactory.Instance.RubriquesVm.GetSousRubrique(rubrique, detail.SousRubriqueId);
                     //var sousRubriqueLibelle = sousrubrique.Libelle;
                     StatRubriqueModel statsRubrique;
+
+                    //recherche si la rubrique est déjà dans le résultat
+                    var statdetail = result.FirstOrDefault(d => d.Id == rubrique.Id);
                     if (statdetail == null)
                     {
+                        //si elle n'est pas présente, on crée un nouveau resultat
                         result.Add(new DetailStat
                         {
                             Id = rubrique.Id,
@@ -192,6 +205,7 @@ namespace MaCompta.ViewModels
                     }
                     else
                     {
+                        //si la rubrique est déjà présente, on la met à jour
                         statdetail.Montant += detail.Montant;
                         //mise à jour rubrique
                         statsRubrique = StatsRubrique.First(r => r.Id == rubrique.Id);
@@ -223,6 +237,25 @@ namespace MaCompta.ViewModels
             //                TotalParMois = total / 12;
         }
 
+        private bool FiltrerCommentaire(DetailModel detail)
+        {
+            if (string.IsNullOrEmpty(Commentaire)) 
+            { 
+                return true; 
+            }
+            else
+            {
+                if (detail.Commentaire.Contains(Commentaire))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         private void CalculerUneRubrique(IEnumerable<OperationModel> operations, List<DetailStat> result)
         {
             LegendTitle = "Sous-Rubriques";
@@ -236,78 +269,80 @@ namespace MaCompta.ViewModels
             {
                 foreach (var detail in operation.Details)
                 {
-                    if (detail.RubriqueId == SelectedRubrique.Id)
+                    if (detail.RubriqueId != SelectedRubrique.Id || !FiltrerCommentaire(detail))
                     {
-                        //recherche de la sous-rubrique
-                        var sousrubrique = WpfIocFactory.Instance.RubriquesVm.GetSousRubrique(SelectedRubrique, detail.SousRubriqueId);
-                        var sousRubriqueLibelle = sousrubrique.Libelle;
-                        //stat globale
-                        var statDetail = result.FirstOrDefault(d => d.Id == detail.SousRubriqueId);
-                        montantTotal += detail.Montant;
-                        if (statDetail == null)
+                        continue;
+                    }
+
+                    //recherche de la sous-rubrique
+                    var sousrubrique = WpfIocFactory.Instance.RubriquesVm.GetSousRubrique(SelectedRubrique, detail.SousRubriqueId);
+                    var sousRubriqueLibelle = sousrubrique.Libelle;
+                    //stat globale
+                    var statDetail = result.FirstOrDefault(d => d.Id == detail.SousRubriqueId);
+                    montantTotal += detail.Montant;
+                    if (statDetail == null)
+                    {
+                        result.Add(new DetailStat
                         {
-                            result.Add(new DetailStat
-                                            {
-                                                Id = detail.SousRubriqueId,
-                                                Libelle = sousRubriqueLibelle,
-                                                Montant = detail.Montant,
-                                                //FavoriteColor = SousRubriquesColors[colorIndex]
-                                            });
-                            DetailSousRubriques.Add(sousrubrique);
+                            Id = detail.SousRubriqueId,
+                            Libelle = sousRubriqueLibelle,
+                            Montant = detail.Montant,
+                            //FavoriteColor = SousRubriquesColors[colorIndex]
+                        });
+                        DetailSousRubriques.Add(sousrubrique);
+                    }
+                    else
+                    {
+                        statDetail.Montant += detail.Montant;
+                    }
+
+                    //stat mensuelle
+                    var statSousRubrique = StatsMulti.FirstOrDefault(d => d.Id == detail.SousRubriqueId);
+                    if (statSousRubrique == null)
+                    {
+                        statSousRubrique = new DetailStatMulti
+                        {
+                            Libelle = sousRubriqueLibelle,
+                            Id = detail.SousRubriqueId,
+                            //FavoriteColor = SousRubriquesColors[colorIndex]
+                        };
+                        //colorIndex++;
+                        if (DateDebut.Month > DateFin.Month)
+                        {
+                            //à cheval sur 2 années
+                            for (int i = DateDebut.Month; i <= 12; i++)
+                            {
+                                statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
+                            }
+                            for (int i = 1; i <= DateFin.Month; i++)
+                            {
+                                statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
+                            }
                         }
                         else
                         {
-                            statDetail.Montant += detail.Montant;
+                            for (int i = DateDebut.Month; i <= DateFin.Month; i++)
+                            {
+                                statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
+                            }
                         }
-
-                        //stat mensuelle
-                        var statSousRubrique = StatsMulti.FirstOrDefault(d => d.Id == detail.SousRubriqueId);
-                        if (statSousRubrique == null)
+                        StatsMulti.Add(statSousRubrique);
+                    }
+                    if (operation.DateValidation != null)
+                    {
+                        var currentMois = operation.DateValidation.Value.Month;
+                        var mois =
+                            statSousRubrique.Stats.FirstOrDefault(s => s.Mois == currentMois);
+                        if (mois != null)
                         {
-                            statSousRubrique = new DetailStatMulti
-                                                    {
-                                                        Libelle = sousRubriqueLibelle,
-                                                        Id = detail.SousRubriqueId,
-                                                        //FavoriteColor = SousRubriquesColors[colorIndex]
-                                                    };
-                            //colorIndex++;
-                            if (DateDebut.Month > DateFin.Month)
+                            mois.Montant += detail.Montant;
+                            mois.Details.Add(new DetailDate
                             {
-                                //à cheval sur 2 années
-                                for (int i = DateDebut.Month; i <= 12; i++)
-                                {
-                                    statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
-                                }
-                                for (int i = 1; i <= DateFin.Month; i++)
-                                {
-                                    statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
-                                }
-                            }
-                            else
-                            {
-                                for (int i = DateDebut.Month; i <= DateFin.Month; i++)
-                                {
-                                    statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
-                                }
-                            }
-                            StatsMulti.Add(statSousRubrique);
-                        }
-                        if (operation.DateValidation != null)
-                        {
-                            var currentMois = operation.DateValidation.Value.Month;
-                            var mois =
-                                statSousRubrique.Stats.FirstOrDefault(s => s.Mois == currentMois);
-                            if (mois != null)
-                            {
-                                mois.Montant += detail.Montant;
-                                mois.Details.Add(new DetailDate
-                                                        {
-                                                            DateDetail = operation.DateValidation.Value.ToShortDateString(),
-                                                            Ordre = operation.Ordre,
-                                                            Montant = detail.Montant,
-                                                            Commentaire = detail.Commentaire
-                                                        });
-                            }
+                                DateDetail = operation.DateValidation.Value.ToShortDateString(),
+                                Ordre = operation.Ordre,
+                                Montant = detail.Montant,
+                                Commentaire = detail.Commentaire
+                            });
                         }
                     }
                 }
@@ -394,81 +429,83 @@ namespace MaCompta.ViewModels
             {
                 foreach (var detail in operation.Details)
                 {
-                    if (detail.RubriqueId == SelectedRubrique.Id && detail.SousRubriqueId == SelectedSousRubrique.Id)
+                    if (detail.RubriqueId != SelectedRubrique.Id || detail.SousRubriqueId != SelectedSousRubrique.Id || !FiltrerCommentaire(detail))
                     {
-                        var sousRubriqueLibelle = SelectedSousRubrique.Libelle;
+                        continue;
+                    }
 
-                        //stat globale
-                        var statDetail = result.FirstOrDefault(d => d.Id == detail.SousRubriqueId);
-                        montantTotal += detail.Montant;
-                        if (statDetail == null)
+                    var sousRubriqueLibelle = SelectedSousRubrique.Libelle;
+
+                    //stat globale
+                    var statDetail = result.FirstOrDefault(d => d.Id == detail.SousRubriqueId);
+                    montantTotal += detail.Montant;
+                    if (statDetail == null)
+                    {
+                        result.Add(new DetailStat
+                                        {
+                                            Id = detail.SousRubriqueId,
+                                            Libelle = sousRubriqueLibelle,
+                                            Montant = detail.Montant,
+                                            //FavoriteColor = SousRubriquesColors[colorIndex]
+                                        });
+                        DetailSousRubriques.Add(SelectedSousRubrique);
+                    }
+                    else
+                    {
+                        statDetail.Montant += detail.Montant;
+                    }
+
+                    //stat mensuelle
+                    var statSousRubrique = StatsMulti.FirstOrDefault(d => d.Id == detail.SousRubriqueId);
+                    if (statSousRubrique == null)
+                    {
+                        statSousRubrique = new DetailStatMulti
+                                                {
+                                                    Libelle = sousRubriqueLibelle,
+                                                    Id = detail.SousRubriqueId,
+                                                    //FavoriteColor = SousRubriquesColors[colorIndex]
+                                                };
+                        StatsMulti.Add(statSousRubrique);
+                        //colorIndex++;
+                        if (DateDebut.Month > DateFin.Month)
                         {
-                            result.Add(new DetailStat
-                                         {
-                                             Id = detail.SousRubriqueId,
-                                             Libelle = sousRubriqueLibelle,
-                                             Montant = detail.Montant,
-                                             //FavoriteColor = SousRubriquesColors[colorIndex]
-                                         });
-                            DetailSousRubriques.Add(SelectedSousRubrique);
+                            //à cheval sur 2 années
+                            for (int i = DateDebut.Month; i <= 12; i++)
+                            {
+                                statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
+                            }
+                            for (int i = 1; i <= DateFin.Month; i++)
+                            {
+                                statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
+                            }
                         }
                         else
                         {
-                            statDetail.Montant += detail.Montant;
-                        }
-
-                        //stat mensuelle
-                        var statSousRubrique = StatsMulti.FirstOrDefault(d => d.Id == detail.SousRubriqueId);
-                        if (statSousRubrique == null)
-                        {
-                            statSousRubrique = new DetailStatMulti
-                                                   {
-                                                       Libelle = sousRubriqueLibelle,
-                                                       Id = detail.SousRubriqueId,
-                                                       //FavoriteColor = SousRubriquesColors[colorIndex]
-                                                   };
-                            StatsMulti.Add(statSousRubrique);
-                            //colorIndex++;
-                            if (DateDebut.Month > DateFin.Month)
+                            for (int i = DateDebut.Month; i <= DateFin.Month; i++)
                             {
-                                //à cheval sur 2 années
-                                for (int i = DateDebut.Month; i <= 12; i++)
-                                {
-                                    statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
-                                }
-                                for (int i = 1; i <= DateFin.Month; i++)
-                                {
-                                    statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
-                                }
-                            }
-                            else
-                            {
-                                for (int i = DateDebut.Month; i <= DateFin.Month; i++)
-                                {
-                                    statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
-                                }
+                                statSousRubrique.Stats.Add(new DetailStatSerie { Mois = i, Montant = 0 });
                             }
                         }
-                        if (operation.DateOperation != null)
-                        {
-                            var currentMois = operation.DateOperation.Value.Month;
-                            var mois =
-                                statSousRubrique.Stats.FirstOrDefault(s => s.Mois == currentMois);
-                            if (mois != null)
-                            {
-                                mois.Montant += detail.Montant;
-                                mois.Details.Add(new DetailDate
-                                                 {
-                                                     DateDetail =
-                                                         operation.DateValidation.Value.ToShortDateString(),
-                                                     Ordre = operation.Ordre,
-                                                     Montant = detail.Montant,
-                                                     Commentaire = detail.Commentaire
-                                                 });
-                            }
-                        }
-
                     }
+                    if (operation.DateOperation != null)
+                    {
+                        var currentMois = operation.DateOperation.Value.Month;
+                        var mois =
+                            statSousRubrique.Stats.FirstOrDefault(s => s.Mois == currentMois);
+                        if (mois != null)
+                        {
+                            mois.Montant += detail.Montant;
+                            mois.Details.Add(new DetailDate
+                                                {
+                                                    DateDetail =
+                                                        operation.DateValidation.Value.ToShortDateString(),
+                                                    Ordre = operation.Ordre,
+                                                    Montant = detail.Montant,
+                                                    Commentaire = detail.Commentaire
+                                                });
+                        }
+                    }
+
                 }
             }
             var nbMois = CalcNbMois();
@@ -632,6 +669,13 @@ namespace MaCompta.ViewModels
         {
             get;
             private set;
+        }
+        
+        public string Commentaire { get { return _commentaire; }
+            set { 
+                _commentaire = value;
+                RaisePropertyChanged(vm => vm.Commentaire);
+            } 
         }
 
         /// <summary>
