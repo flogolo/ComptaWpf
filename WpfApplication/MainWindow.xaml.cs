@@ -36,13 +36,13 @@ namespace MaCompta
                 if (_mainVm.TestDatabase())
                 {
                     _mainVm.DisplayMessage("Chargement des données...");
-                    //chargement des rubriques directement car utilisées par les virements
+                    //chargement des rubriques 
                     WpfIocFactory.Instance.RubriquesVm.LoadRubriques();
-                    //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                      //  new NoArgDelegate(WpfIocFactory.Instance.RubriquesVm.LoadRubriques));
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new NoArgDelegate(_mainVm.LoadMain));
-                    LoadVirements();
+                    //chargement des comptes
+                    _mainVm.LoadMain();
+                    //chargement des virements
+                    var dc = WpfIocFactory.Instance.Container.Resolve<VirementsViewModel>();
+                    dc.LoadVirements();
                 }
                 AddHandler(CloseableTabItem.CloseTabEvent, new RoutedEventHandler(CloseTab));
                 _mainVm.PropertyChanged += _mainVm_PropertyChanged;
