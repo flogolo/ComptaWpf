@@ -210,6 +210,7 @@
     <Compile Include="ViewModels\CommandViewModel.cs" />
     <Compile Include="ViewModels\ComparatifViewModel.cs" />
     <Compile Include="ViewModels\CompteViewModel.cs" />
+    <Compile Include="ViewModels\Stats\DetailStat.cs" />
     <Compile Include="ViewModels\DialogOperationChangeCompteViewModel.cs" />
     <Compile Include="ViewModels\DialogOperationFiltreViewModel.cs" />
     <Compile Include="ViewModels\FilterViewModel.cs" />
@@ -224,7 +225,11 @@
     <Compile Include="ViewModels\OperationsPredefiniesViewModel.cs" />
     <Compile Include="ViewModels\OperationViewModel.cs" />
     <Compile Include="ViewModels\StatistiquesViewModel.cs" />
-    <Compile Include="ViewModels\StatModels.cs" />
+    <Compile Include="ViewModels\Stats\DetailStatMulti.cs" />
+    <Compile Include="ViewModels\Stats\DetailStatSerie.cs" />
+    <Compile Include="ViewModels\Stats\DetailDate.cs" />
+    <Compile Include="ViewModels\Stats\StatRubriqueModel.cs" />
+    <Compile Include="ViewModels\Stats\StatSousRubriqueModel.cs" />
     <Compile Include="ViewModels\VersionModifications.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\SousRubriqueViewModel.cs" />

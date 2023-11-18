@@ -1,0 +1,15 @@
+calcul des statistiques
+
+
+DetailStat : Montant, libellé, Id
+DetailDate : Montant, DateDetail, Ordre, Commentaire
+DetailStatMulti : Libelle, Id, Stats (DetailStatSerie)
+DetailStatSerie : Montant, Mois, Details (DetailDate)
+StatRubriqueModel : Libelle, Id, Montant, SousRubriqueStats (StatSousRubriqueModel)
+StatSousRubriqueModel : Libelle, Id, Montant Details (DetailDate)
+
+        /// <summary>
+
+1 - pour toutes les rubriques
+
+Id = rubriqueId

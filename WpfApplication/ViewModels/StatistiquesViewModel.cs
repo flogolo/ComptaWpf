@@ -759,13 +759,6 @@ namespace MaCompta.ViewModels
         #endregion
     }
 
-    public class DetailStat
-    {
-        public decimal Montant { get; set; }
-        public string Libelle { get; set; }
-        public long Id { get; set; }
-    }
-
     public enum DetailTriOption
     {
         [Description("Par rubrique et sous-rubrique")]
