@@ -2,7 +2,6 @@
 
 namespace MaCompta.ViewModels
 {
-    #region stats rubrique/mois
     public class DetailStatMulti
     {
         public DetailStatMulti()

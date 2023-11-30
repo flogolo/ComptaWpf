@@ -4,8 +4,6 @@ using System.Globalization;
 
 namespace MaCompta.ViewModels
 {
-    #region stats rubrique/mois
-
     public class DetailStatSerie : IComparable<DetailStatSerie>
     {
         public DetailStatSerie()

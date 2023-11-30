@@ -2,8 +2,6 @@
 
 namespace MaCompta.ViewModels
 {
-    #region Stats rubrique/sous-rubrique
-
     public class StatSousRubriqueModel
     {
         public StatSousRubriqueModel()
