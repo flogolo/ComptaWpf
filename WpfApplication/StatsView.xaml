@@ -3,18 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
-             xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:common="clr-namespace:MaCompta.Common"
              xmlns:controls="clr-namespace:MaCompta.Controls"
              xmlns:viewModels="clr-namespace:MaCompta.ViewModels"
              mc:Ignorable="d" 
              SizeChanged="UserControlSizeChanged"
              >
+    <!--xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:visualizationToolkit="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"-->
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <common:CurrencyConverter x:Key="MyCurrencyConverter"/>
-        <visualizationToolkit:ResourceDictionaryCollection x:Key="MyPalette">
+        <!--<visualizationToolkit:ResourceDictionaryCollection x:Key="MyPalette">
             <ResourceDictionary>
                 <Style x:Key="DataPointStyle" TargetType="Control">
                     <Setter Property="Background" Value="Brown"/>
@@ -85,7 +85,7 @@
                     <Setter Property="Background" Value="Black"/>
                 </Style>
             </ResourceDictionary>
-        </visualizationToolkit:ResourceDictionaryCollection>
+        </visualizationToolkit:ResourceDictionaryCollection>-->
     </UserControl.Resources>
     <Grid VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="DgRoot">
         <Grid.RowDefinitions>
@@ -105,11 +105,6 @@
                                               >
                     
                 </controls:MultiSelectComboBox>
-                <!--<ComboBox Width="200" ItemsSource="{Binding Comptes}"
-                           SelectedItem="{Binding SelectedCompte, Mode=TwoWay}"/>-->
-                <!--<Label Content="Aucune donnée disponible. Chargez un compte et sélectionnez les valeurs"
-                       Visibility="{Binding IsNotAvailable, Converter={StaticResource BoolToVis}}"
-                       Margin="5" Style="{StaticResource TextBlockStyle}"/>-->
             </StackPanel>
                 <!-- Choix rubrique -->
                 <StackPanel Orientation="Horizontal" Margin="5,5,5,0" >
@@ -162,13 +157,13 @@
         </StackPanel>
         <!-- résultats-->
             <Grid Grid.Row="1" x:Name="DgGraph">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width=".5*"/>
-                        <ColumnDefinition Width=".5*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                <!-- Graphique camembert -->
-            <chartingToolkit:Chart Background="#FF406796"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <!-- Graphique camembert -->
+            <!--<chartingToolkit:Chart Background="#FF406796"
                                        Grid.Column="0"
                                    Foreground="Black"
                            Title="{Binding StatTitle}" LegendTitle="{Binding LegendTitle}"
@@ -184,9 +179,9 @@
                                >
                         
                     </chartingToolkit:PieSeries>
-                </chartingToolkit:Chart>
+                </chartingToolkit:Chart>-->
                 <!-- Graphique par mois -->
-            <chartingToolkit:Chart Background="#FF406796"
+            <!--<chartingToolkit:Chart Background="#FF406796"
                                    Foreground="Black"
                                        Grid.Column="1"
                         Visibility="{Binding Path=IsSousRubrique, Converter={StaticResource BoolToVis}}"
@@ -197,7 +192,7 @@
                         <Setter Property="Background" Value="Transparent" />
                     </Style>
                 </chartingToolkit:Chart.PlotAreaStyle>
-            </chartingToolkit:Chart>
+            </chartingToolkit:Chart>-->
                 <!-- par rubrique/mois -->
                 <StackPanel Grid.Column="2"
                             Visibility="{Binding Path=IsSousRubrique, Converter={StaticResource BoolToVis}}">

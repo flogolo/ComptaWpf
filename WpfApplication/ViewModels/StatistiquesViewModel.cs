@@ -11,8 +11,6 @@ using CommonLibrary.Tools;
 using MaCompta.Commands;
 using MaCompta.Common;
 using MaCompta.Controls;
-using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Asn1.Ess;
 
 namespace MaCompta.ViewModels
 {
@@ -759,13 +757,6 @@ namespace MaCompta.ViewModels
         /// </summary>
         public event EventHandler StatsUpdated;
         #endregion
-    }
-
-    public class DetailStat
-    {
-        public decimal Montant { get; set; }
-        public string Libelle { get; set; }
-        public long Id { get; set; }
     }
 
     public enum DetailTriOption

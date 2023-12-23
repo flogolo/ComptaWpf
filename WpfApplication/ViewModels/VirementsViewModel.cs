@@ -8,8 +8,8 @@ using CommonLibrary.Models;
 using CommonLibrary.Services.Interfaces;
 using CommonLibrary.Tools;
 using MaCompta.Commands;
-using GalaSoft.MvvmLight.Threading;
 using System.Linq;
+using MaCompta.Common;
 
 namespace MaCompta.ViewModels
 {

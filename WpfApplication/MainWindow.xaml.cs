@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Threading;
 using MaCompta.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
 using MaCompta.Tools;
 using MaCompta.Dialogs;
 using System.Windows.Input;
@@ -11,6 +10,7 @@ using System;
 using MaCompta.Controls;
 using System.ComponentModel;
 using System.Linq;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace MaCompta
 {
@@ -36,11 +36,13 @@ namespace MaCompta
                 if (_mainVm.TestDatabase())
                 {
                     _mainVm.DisplayMessage("Chargement des données...");
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new NoArgDelegate(_mainVm.LoadMain));
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new NoArgDelegate(WpfIocFactory.Instance.RubriquesVm.LoadRubriques));
-                    LoadVirements();
+                    //chargement des rubriques 
+                    WpfIocFactory.Instance.RubriquesVm.LoadRubriques();
+                    //chargement des comptes
+                    _mainVm.LoadMain();
+                    //chargement des virements
+                    var dc = WpfIocFactory.Instance.Container.Resolve<VirementsViewModel>();
+                    dc.LoadVirements();
                 }
                 AddHandler(CloseableTabItem.CloseTabEvent, new RoutedEventHandler(CloseTab));
                 _mainVm.PropertyChanged += _mainVm_PropertyChanged;
@@ -92,7 +94,7 @@ namespace MaCompta
             ResizeTabItems();
 
             _mainVm.MessageBoxRequest += MainVmMessageBoxRequest;
-            Messenger.Default.Register<ShowDialogMessage>(this, HandleShowDialog);
+            WeakReferenceMessenger.Default.Register<ShowDialogMessage>(this, (r, m) => HandleShowDialog(m));
         }
 
         private void MainVm_CompteDeleted(object sender, EventArgs<CompteViewModel> e)
